@@ -129,7 +129,22 @@ details p { padding: 0 0 22px; color: var(--ink-soft); max-width: 62ch }
 
 /* Appel final */
 .cta { background: var(--lime); color: var(--lime-ink); padding-block: 64px }
-.cta .wrap { display: flex; flex-wrap: wrap; gap: 24px; align-items: center; justify-content: space-between }
+.cta .wrap { display: grid; grid-template-columns: 1.1fr .9fr; gap: 32px; align-items: center }
+.cta-text { display: grid; gap: 14px; min-width: 0 }
+.wait { background: #FFFFFF; color: #101511; border-radius: 22px; padding: 22px; display: grid; gap: 12px; min-width: 0 }
+.wait fieldset { border: 0; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; align-items: center }
+.wait legend { font-weight: 600; font-size: 14px; margin-bottom: 6px; width: 100% }
+.wait fieldset label { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 14px; border: 1.5px solid #D3D7CE; border-radius: 999px; font-size: 14.5px; cursor: pointer }
+.wait fieldset label:has(input:checked) { border-color: #101511; background: #F3F4F0; font-weight: 600 }
+.wait .field { font-weight: 600; font-size: 14px }
+.wait .line { display: flex; gap: 8px; flex-wrap: wrap }
+.wait input[type=email] { flex: 1 1 200px; min-width: 0; min-height: 48px; border: 1.5px solid #D3D7CE; border-radius: 14px; padding: 0 14px; font: 400 16px var(--body); color: #101511; background: #FFFFFF }
+.wait input[type=email]:focus { outline: 3px solid #123B2C; outline-offset: 1px }
+.wait .btn { background: #123B2C; border-color: #123B2C; color: #FFFFFF }
+.wait .msg { min-height: 1.2em; font-size: 14px; font-weight: 600 }
+.wait .msg.ok { color: #1C5A40 } .wait .msg.err { color: #B42318 }
+.wait .fine { font-size: 12px; color: #5B625C }
+@media (max-width: 820px) { .cta .wrap { grid-template-columns: 1fr } }
 .cta h2 { color: var(--lime-ink); max-width: 14em }
 .stores { display: flex; flex-wrap: wrap; gap: 10px }
 .store { display: inline-flex; flex-direction: column; justify-content: center; min-height: 54px; padding: 0 20px; border-radius: 14px; background: #101511; color: #fff; font-size: 12px; line-height: 1.2 }
@@ -160,7 +175,7 @@ footer .legal { font-size: 12.5px; max-width: 80ch }
       <a href="#etapes">Comment ça marche</a>
       <a href="#faq">Questions</a>
     </nav>
-    <a class="btn" href="#telecharger">Télécharger</a>
+    <a class="btn" href="#telecharger">Être prévenu</a>
   </div>
 </header>
 
@@ -280,7 +295,7 @@ footer .legal { font-size: 12.5px; max-width: 80ch }
             <li><b>Vous ne payez que si c’est fait :</b> chaque contrepartie est prouvée en photo, sinon sa part vous est remboursée.</li>
             <li><b>Un stand au grand match</b> pour vendre vos produits sur place, selon la formule choisie.</li>
           </ul>
-          <a class="btn" href="#telecharger">Trouver un club près de chez moi</a>
+          <a class="btn" href="#telecharger" data-kind="shop">Être prévenu du lancement</a>
         </article>
         <article class="side club" id="clubs">
           <p class="eyebrow">Clubs</p>
@@ -291,7 +306,7 @@ footer .legal { font-size: 12.5px; max-width: 80ch }
             <li><b>Argent versé au fil des preuves,</b> à retirer vers le compte du club quand vous voulez.</li>
             <li><b>Contrat et reçu fiscal automatiques,</b> sans paperasse pour le trésorier.</li>
           </ul>
-          <a class="btn lime" href="#telecharger">Inscrire mon club</a>
+          <a class="btn lime" href="#telecharger" data-kind="club">Inscrire mon club en avant-première</a>
         </article>
       </div>
     </div>
@@ -340,14 +355,28 @@ footer .legal { font-size: 12.5px; max-width: 80ch }
 
   <section class="cta" id="telecharger">
     <div class="wrap">
-      <div>
+      <div class="cta-text">
         <h2>Le club d’à côté cherche un partenaire</h2>
-        <small>L’application arrive bientôt sur iPhone et Android.</small>
+        <small>L’application arrive bientôt sur iPhone et Android. Laissez votre e-mail : on vous prévient le jour du lancement.</small>
+        <div class="stores" aria-label="Disponibilité">
+          <span class="store">Bientôt sur<b>l’App Store</b></span>
+          <span class="store">Bientôt sur<b>Google Play</b></span>
+        </div>
       </div>
-      <div class="stores" aria-label="Disponibilité">
-        <span class="store">Bientôt sur<b>l’App Store</b></span>
-        <span class="store">Bientôt sur<b>Google Play</b></span>
-      </div>
+      <form class="wait" id="wait-form" novalidate>
+        <fieldset>
+          <legend>Je suis</legend>
+          <label><input type="radio" name="kind" value="shop" id="kind-shop" checked> un commerçant</label>
+          <label><input type="radio" name="kind" value="club" id="kind-club"> un club</label>
+        </fieldset>
+        <label class="field" for="wait-email">Votre e-mail</label>
+        <div class="line">
+          <input id="wait-email" type="email" name="email" autocomplete="email" placeholder="vous@exemple.fr" required>
+          <button class="btn" type="submit" id="wait-send">Me prévenir</button>
+        </div>
+        <p class="msg" id="wait-msg" role="status" aria-live="polite"></p>
+        <p class="fine">Votre e-mail sert uniquement à vous prévenir du lancement. Aucune publicité, aucune revente.</p>
+      </form>
     </div>
   </section>
 </main>
@@ -363,5 +392,35 @@ footer .legal { font-size: 12.5px; max-width: 80ch }
     <p class="legal">Quartier est édité par Gaspard Lobmeyr, entrepreneur individuel (micro-entreprise), SIRET en cours d’attribution, 11 bis boulevard de Beauséjour, 75016 Paris. Les informations fiscales de cette page sont données à titre indicatif et ne remplacent pas l’avis d’un professionnel.</p>
   </div>
 </footer>
+
+<script>
+(() => {
+  // Liste d'attente : enregistrée dans la base Quartier (table « waitlist », inscription seulement).
+  const SUPABASE = 'https://fiuvymrxvsyibvinzscm.supabase.co';
+  const KEY = 'sb_publishable_2QUlWqtncqYEL1MwpMliyA_Yi4ghl43';
+  const form = document.getElementById('wait-form');
+  const msg = document.getElementById('wait-msg');
+  const email = document.getElementById('wait-email');
+  const send = document.getElementById('wait-send');
+  document.querySelectorAll('a[data-kind]').forEach((a) => a.addEventListener('click', () => {
+    const r = document.getElementById('kind-' + a.dataset.kind); if (r) r.checked = true;
+    setTimeout(() => email.focus({ preventScroll: true }), 600);
+  }));
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const value = email.value.trim();
+    const kind = form.querySelector('input[name=kind]:checked')?.value || 'shop';
+    msg.className = 'msg';
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(value)) { msg.textContent = 'Vérifiez votre adresse e-mail (ex. vous@exemple.fr).'; msg.classList.add('err'); email.focus(); return; }
+    send.disabled = true; send.textContent = 'Envoi…';
+    try {
+      const res = await fetch(SUPABASE + '/rest/v1/waitlist', { method: 'POST', headers: { apikey: KEY, Authorization: 'Bearer ' + KEY, 'Content-Type': 'application/json', Prefer: 'return=minimal' }, body: JSON.stringify({ email: value, kind }) });
+      if (res.ok || res.status === 409) { msg.textContent = 'C’est noté ! On vous écrit le jour du lancement.'; msg.classList.add('ok'); form.reset(); document.getElementById('kind-' + kind).checked = true; }
+      else throw new Error(String(res.status));
+    } catch { msg.textContent = 'L’envoi n’a pas marché. Réessayez dans un instant.'; msg.classList.add('err'); }
+    send.disabled = false; send.textContent = 'Me prévenir';
+  });
+})();
+</script>
 </body>
 </html>
