@@ -259,6 +259,9 @@ footer .legal { font-size: 12.5px; max-width: 80ch }
 @media (max-width: 980px) { .gains .grid { grid-template-columns: repeat(2, 1fr) } }
 @media (max-width: 520px) { .gains .grid { grid-template-columns: 1fr } }
 .other { margin-top: 28px; font-weight: 600 }
+.back { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 16px 0 12px; margin-bottom: 18px; border: 1px solid var(--line); border-radius: 999px; color: var(--ink); text-decoration: none; font-weight: 600; font-size: 14.5px; background: var(--card) }
+.back:hover { border-color: var(--lime) }
+.back svg { width: 18px; height: 18px; fill: none; stroke: var(--lime); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round }
 .try-link { justify-self: start; margin-top: 4px; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid var(--lime); background: transparent; color: var(--lime); font: 600 14.5px/1 var(--body); cursor: pointer }
 .try-link:hover { background: var(--lime); color: var(--lime-ink) }
 .perk h3 { margin-top: 2px }
@@ -335,6 +338,7 @@ dialog.studio::backdrop { background: rgba(5,10,7,.72); -webkit-backdrop-filter:
   <div class="wrap bar">
     <a class="mark" href="index.html" aria-label="Quartier, accueil">quartier<i aria-hidden="true"></i></a>
     <nav aria-label="Pages">
+      <a href="index.html">Accueil</a>
       <a href="commercants.html" aria-current="page">Commerçants</a>
       <a href="clubs.html">Clubs</a>
       <a href="index.html#etapes">Comment ça marche</a>
@@ -349,6 +353,7 @@ dialog.studio::backdrop { background: rgba(5,10,7,.72); -webkit-backdrop-filter:
   <section class="hero">
     <div class="wrap hgrid">
       <div>
+        <a class="back" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>Retour à l’accueil</a>
         <p class="eyebrow">Pour les commerçants</p>
         <h1 style="margin-top:14px">Soutenez le club <em>de votre quartier.</em></h1>
         <p class="lead">Faites un don au club de jeunes d’à côté. En retour : de la visibilité, de nouveaux clients, et 60 % de votre don remboursés par l’État.</p>
