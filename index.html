@@ -262,20 +262,20 @@ footer .legal { font-size: 12.5px; max-width: 80ch }
 .back { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 16px 0 12px; margin-bottom: 18px; border: 1px solid var(--line); border-radius: 999px; color: var(--ink); text-decoration: none; font-weight: 600; font-size: 14.5px; background: var(--card) }
 .back:hover { border-color: var(--lime) }
 .back svg { width: 18px; height: 18px; fill: none; stroke: var(--lime); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round }
-.try-link { justify-self: start; margin-top: 4px; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid var(--lime); background: transparent; color: var(--lime); font: 600 14.5px/1 var(--body); cursor: pointer }
+.try-link { white-space: nowrap; justify-self: start; margin-top: 4px; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid var(--lime); background: transparent; color: var(--lime); font: 600 14.5px/1 var(--body); cursor: pointer }
 .try-link:hover { background: var(--lime); color: var(--lime-ink) }
 .perk h3 { margin-top: 2px }
-.perk { box-shadow: inset 0 3px 0 rgba(226,190,106,.85) }
+.perk { box-shadow: inset 0 3px 0 rgba(76,195,138,.85) }
 .other a { color: var(--accent-ink) }
 nav a[aria-current="page"] { color: var(--ink); text-decoration: underline; text-decoration-color: var(--lime); text-decoration-thickness: 3px; text-underline-offset: 6px }
 
 /* --- Thème unique (même rendu en mode clair ou sombre) --- */
 :root:root:root {
   --paper: #0D1611; --card: #15211A; --ink: #EEF2EC; --ink-soft: #C3CDC6; --muted: #92A098;
-  --line: #24352B; --accent-ink: #A9DCBD; --pitch: #123B2C; --pitch-deep: #0D1611; --on-pitch: #C9D6CF; --lime: #E2BE6A; --lime-ink: #101511;
+  --line: #24352B; --accent-ink: #A9DCBD; --pitch: #123B2C; --pitch-deep: #0D1611; --on-pitch: #C9D6CF; --lime: #4CC38A; --lime-ink: #101511;
   color-scheme: dark;
 }
-body { background: radial-gradient(900px 520px at 85% -8%, rgba(226,190,106,.12), transparent 62%), radial-gradient(800px 600px at -15% 35%, rgba(46,102,204,.13), transparent 60%), radial-gradient(700px 500px at 110% 85%, rgba(30,138,78,.14), transparent 60%), var(--paper) }
+body { background: radial-gradient(900px 520px at 85% -8%, rgba(76,195,138,.12), transparent 62%), radial-gradient(800px 600px at -15% 35%, rgba(46,102,204,.13), transparent 60%), radial-gradient(700px 500px at 110% 85%, rgba(30,138,78,.14), transparent 60%), var(--paper) }
 header { background: rgba(13,22,17,.82); -webkit-backdrop-filter: saturate(140%) blur(12px); backdrop-filter: saturate(140%) blur(12px) }
 body::before { background: var(--paper) }
 .sports { background: transparent; border-color: var(--line) }
@@ -294,14 +294,14 @@ body::before { background: var(--paper) }
 .perk, .tile, details { transition: border-color .2s }
 .perk:hover, .tile:hover { border-color: #3A5546 }
 .choose2 a { background: var(--lime); color: var(--lime-ink) }
-.choose2 a small { color: #4A3913 }
+.choose2 a small { color: #0F3A24 }
 .choose2 a svg { stroke: var(--lime-ink) }
 .btn { background: var(--ink); color: var(--paper); border-color: var(--ink) }
 .btn.ghost { background: transparent; color: var(--ink) }
 .hero h1 em { color: var(--lime); text-decoration: none }
 .perk > svg { stroke: var(--lime) }
 .perk .mini div.t b { color: var(--lime) }
-.contact .mail { color: var(--lime); text-decoration-color: rgba(226,190,106,.45) }
+.contact .mail { color: var(--lime); text-decoration-color: rgba(76,195,138,.45) }
 .contact .box { border-color: var(--line); background: var(--card) }
 .other a, nav a[aria-current="page"] { color: var(--ink) }
 

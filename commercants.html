@@ -262,20 +262,20 @@ footer .legal { font-size: 12.5px; max-width: 80ch }
 .back { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 16px 0 12px; margin-bottom: 18px; border: 1px solid var(--line); border-radius: 999px; color: var(--ink); text-decoration: none; font-weight: 600; font-size: 14.5px; background: var(--card) }
 .back:hover { border-color: var(--lime) }
 .back svg { width: 18px; height: 18px; fill: none; stroke: var(--lime); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round }
-.try-link { justify-self: start; margin-top: 4px; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid var(--lime); background: transparent; color: var(--lime); font: 600 14.5px/1 var(--body); cursor: pointer }
+.try-link { white-space: nowrap; justify-self: start; margin-top: 4px; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid var(--lime); background: transparent; color: var(--lime); font: 600 14.5px/1 var(--body); cursor: pointer }
 .try-link:hover { background: var(--lime); color: var(--lime-ink) }
 .perk h3 { margin-top: 2px }
-.perk { box-shadow: inset 0 3px 0 rgba(226,190,106,.85) }
+.perk { box-shadow: inset 0 3px 0 rgba(76,195,138,.85) }
 .other a { color: var(--accent-ink) }
 nav a[aria-current="page"] { color: var(--ink); text-decoration: underline; text-decoration-color: var(--lime); text-decoration-thickness: 3px; text-underline-offset: 6px }
 
 /* --- Thème unique (même rendu en mode clair ou sombre) --- */
 :root:root:root {
   --paper: #0D1611; --card: #15211A; --ink: #EEF2EC; --ink-soft: #C3CDC6; --muted: #92A098;
-  --line: #24352B; --accent-ink: #A9DCBD; --pitch: #123B2C; --pitch-deep: #0D1611; --on-pitch: #C9D6CF; --lime: #E2BE6A; --lime-ink: #101511;
+  --line: #24352B; --accent-ink: #A9DCBD; --pitch: #123B2C; --pitch-deep: #0D1611; --on-pitch: #C9D6CF; --lime: #4CC38A; --lime-ink: #101511;
   color-scheme: dark;
 }
-body { background: radial-gradient(900px 520px at 85% -8%, rgba(226,190,106,.12), transparent 62%), radial-gradient(800px 600px at -15% 35%, rgba(46,102,204,.13), transparent 60%), radial-gradient(700px 500px at 110% 85%, rgba(30,138,78,.14), transparent 60%), var(--paper) }
+body { background: radial-gradient(900px 520px at 85% -8%, rgba(76,195,138,.12), transparent 62%), radial-gradient(800px 600px at -15% 35%, rgba(46,102,204,.13), transparent 60%), radial-gradient(700px 500px at 110% 85%, rgba(30,138,78,.14), transparent 60%), var(--paper) }
 header { background: rgba(13,22,17,.82); -webkit-backdrop-filter: saturate(140%) blur(12px); backdrop-filter: saturate(140%) blur(12px) }
 body::before { background: var(--paper) }
 .sports { background: transparent; border-color: var(--line) }
@@ -294,14 +294,14 @@ body::before { background: var(--paper) }
 .perk, .tile, details { transition: border-color .2s }
 .perk:hover, .tile:hover { border-color: #3A5546 }
 .choose2 a { background: var(--lime); color: var(--lime-ink) }
-.choose2 a small { color: #4A3913 }
+.choose2 a small { color: #0F3A24 }
 .choose2 a svg { stroke: var(--lime-ink) }
 .btn { background: var(--ink); color: var(--paper); border-color: var(--ink) }
 .btn.ghost { background: transparent; color: var(--ink) }
 .hero h1 em { color: var(--lime); text-decoration: none }
 .perk > svg { stroke: var(--lime) }
 .perk .mini div.t b { color: var(--lime) }
-.contact .mail { color: var(--lime); text-decoration-color: rgba(226,190,106,.45) }
+.contact .mail { color: var(--lime); text-decoration-color: rgba(76,195,138,.45) }
 .contact .box { border-color: var(--line); background: var(--card) }
 .other a, nav a[aria-current="page"] { color: var(--ink) }
 
@@ -351,7 +351,7 @@ dialog.studio::backdrop { background: rgba(5,10,7,.72); -webkit-backdrop-filter:
 
 <main id="top">
   <section class="hero">
-    <div class="wrap hgrid">
+    <div class="wrap">
       <div>
         <a class="back" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>Retour à l’accueil</a>
         <p class="eyebrow">Pour les commerçants</p>
@@ -359,79 +359,6 @@ dialog.studio::backdrop { background: rgba(5,10,7,.72); -webkit-backdrop-filter:
         <p class="lead">Faites un don au club de jeunes d’à côté. En retour : de la visibilité, de nouveaux clients, et 60 % de votre don remboursés par l’État.</p>
         <div class="ctas"><a class="btn lime" href="#telecharger">Être prévenu du lancement</a></div>
       </div>
-      <button type="button" class="art" data-open-studio aria-haspopup="dialog"><svg class="shirt" viewBox="0 0 300 300" role="img" aria-label="Maillot de football bleu d’un club de quartier, avec son écusson et le logo de la pizzeria sponsor au centre">
-          <defs>
-            <linearGradient id="fab" x1="0" x2="1" y1="0" y2="0">
-              <stop offset="0" stop-color="#14347A"/><stop offset=".17" stop-color="#2152B0"/><stop offset=".5" stop-color="#2E66CC"/><stop offset=".83" stop-color="#1F4FAA"/><stop offset="1" stop-color="#122F70"/>
-            </linearGradient>
-            <linearGradient id="fabv" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset=".75" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".10"/>
-            </linearGradient>
-            <linearGradient id="slv" x1="0" x2="1" y1="0" y2="1">
-              <stop offset="0" stop-color="#2A5EC0"/><stop offset="1" stop-color="#173C86"/>
-            </linearGradient>
-            <linearGradient id="lime" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#D9DEE8"/>
-            </linearGradient>
-            <pattern id="mesh" width="4" height="4" patternUnits="userSpaceOnUse">
-              <circle cx="1" cy="1" r=".55" fill="#000" fill-opacity=".12"/><circle cx="3" cy="3" r=".55" fill="#000" fill-opacity=".09"/>
-            </pattern>
-            <filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="3"/></filter>
-            <filter id="drop" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="7"/></filter>
-            <clipPath id="body"><path d="M112 30 L80 41 L72 112 L70 268 C110 279 190 279 230 268 L228 112 L220 41 L188 30 C180 50 164 59 150 59 C136 59 120 50 112 30 Z"/></clipPath>
-          </defs>
-          <ellipse cx="150" cy="284" rx="96" ry="7" fill="#000" opacity=".18" filter="url(#drop)"/>
-          <!-- manches -->
-          <path d="M80 41 L44 60 C30 74 20 92 13 110 L52 128 L72 112 Z" fill="url(#slv)"/>
-          <path d="M220 41 L256 60 C270 74 280 92 287 110 L248 128 L228 112 Z" fill="url(#slv)" transform="translate(0 0)"/>
-          <path d="M13 110 L52 128 L56 119 L18 101 Z" fill="url(#lime)"/>
-          <path d="M287 110 L248 128 L244 119 L282 101 Z" fill="url(#lime)"/>
-          <path d="M80 41 C70 70 70 92 72 112" fill="none" stroke="#8FB0EA" stroke-opacity=".55" stroke-width="1" stroke-dasharray="2 2.5"/>
-          <path d="M220 41 C230 70 230 92 228 112" fill="none" stroke="#8FB0EA" stroke-opacity=".55" stroke-width="1" stroke-dasharray="2 2.5"/>
-          <!-- corps -->
-          <path d="M112 30 L80 41 L72 112 L70 268 C110 279 190 279 230 268 L228 112 L220 41 L188 30 C180 50 164 59 150 59 C136 59 120 50 112 30 Z" fill="url(#fab)"/>
-          <g clip-path="url(#body)">
-            <rect x="60" y="20" width="180" height="270" fill="url(#mesh)"/>
-            <rect x="60" y="20" width="180" height="270" fill="url(#fabv)"/>
-            <!-- bandes latérales -->
-            <path d="M72 112 L84 108 L82 280 L66 280 Z" fill="#0F2A63"/>
-            <path d="M228 112 L216 108 L218 280 L234 280 Z" fill="#0F2A63"/>
-            <path d="M84 108 L88 108 L86 280 L82 280 Z" fill="#FFFFFF"/>
-            <path d="M216 108 L212 108 L214 280 L218 280 Z" fill="#FFFFFF"/>
-            <!-- plis du tissu -->
-            <g fill="none" stroke="#061638" stroke-linecap="round" filter="url(#soft)">
-              <path d="M98 70 C112 110 104 150 112 196" stroke-width="6" opacity=".13"/>
-              <path d="M204 76 C190 120 198 168 186 214" stroke-width="7" opacity=".12"/>
-              <path d="M120 214 C140 226 168 226 186 236" stroke-width="5" opacity=".10"/>
-              <path d="M150 64 C146 80 154 92 150 104" stroke-width="4" opacity=".08"/>
-            </g>
-            <path d="M74 262 C112 272 188 272 226 262" fill="none" stroke="#8FB0EA" stroke-opacity=".55" stroke-width="1" stroke-dasharray="2 2.5"/>
-          </g>
-          <!-- col -->
-          <path d="M112 30 C120 50 136 59 150 59 C164 59 180 50 188 30 L180 26 C173 44 162 51 150 51 C138 51 127 44 120 26 Z" fill="url(#lime)"/>
-          <path d="M120 26 C127 44 138 51 150 51 C162 51 173 44 180 26" fill="none" stroke="#14347A" stroke-opacity=".35" stroke-width="1"/>
-          <path d="M88 39 L112 30 M212 39 L188 30" stroke="#8FB0EA" stroke-opacity=".55" stroke-width="1" stroke-dasharray="2 2.5"/>
-          <!-- écusson du club (côté cœur) : club inventé « Étoile Sportive du 20e » -->
-          <g transform="translate(180 72)">
-            <path d="M0 0 H32 V18 C32 31 22 38 16 42 C10 38 0 31 0 18 Z" fill="#FFFFFF"/>
-            <path d="M2.5 2.5 H29.5 V18 C29.5 29.5 20.5 35.5 16 39 C11.5 35.5 2.5 29.5 2.5 18 Z" fill="#14347A"/>
-            <path d="M2.5 2.5 H29.5 V10 H2.5 Z" fill="#C8102E"/>
-            <text x="16" y="8.8" text-anchor="middle" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-weight="800" font-size="6.6" textLength="20" lengthAdjust="spacingAndGlyphs" fill="#FFFFFF">E.S. 20</text>
-            <circle cx="16" cy="21" r="7" fill="#FFFFFF"/>
-            <path d="M16 17.2 L19.4 19.7 L18.1 23.7 H13.9 L12.6 19.7 Z" fill="#14347A"/>
-            <path d="M16 14 V17.2 M19.4 19.7 L22.6 18.6 M18.1 23.7 L20.1 26.6 M13.9 23.7 L11.9 26.6 M12.6 19.7 L9.4 18.6" stroke="#14347A" stroke-width=".9"/>
-            <text x="16" y="34.6" text-anchor="middle" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-weight="700" font-size="5.2" letter-spacing=".5" fill="#FFFFFF">1974</text>
-          </g>
-          <path d="M196 64 l1.6 3.2 3.5 .5 -2.5 2.5 .6 3.5 -3.2 -1.7 -3.2 1.7 .6 -3.5 -2.5 -2.5 3.5 -.5 Z" fill="#F2C230"/>
-          <!-- petite marque d'équipementier (inventée) -->
-          <g transform="translate(103 86)" fill="#FFFFFF"><path d="M0 9 L7 0 L10 0 L5 9 Z"/><path d="M6 9 L13 0 L16 0 L11 9 Z"/></g>
-          <!-- sponsor imprimé -->
-          <g opacity=".95">
-            <text x="150" y="160" text-anchor="middle" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-weight="800" font-size="36" textLength="112" lengthAdjust="spacingAndGlyphs" fill="#FFFFFF">PIZZA LINO</text>
-            <rect x="116" y="167" width="68" height="14" rx="2" fill="#C8102E"/>
-            <text x="150" y="178" text-anchor="middle" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-weight="700" font-size="10.5" textLength="54" lengthAdjust="spacingAndGlyphs" fill="#FFFFFF">PARIS 20e</text>
-          </g>
-        </svg><span class="hint">✎ Essayez avec votre commerce</span></button>
     </div>
   </section>
 
@@ -528,7 +455,7 @@ dialog.studio::backdrop { background: rgba(5,10,7,.72); -webkit-backdrop-filter:
       <div class="grid">
           <article class="perk"><h3>Une belle image dans le quartier</h3><p>Les habitants voient que vous soutenez leurs enfants. Vous devenez le commerce qui aide le club.</p></article>
           <article class="perk"><h3>De nouveaux clients</h3><p>Parents, joueurs et supporters découvrent votre commerce et viennent chez vous. Entre voisins, on se rend service.</p></article>
-          <article class="perk"><h3>Votre logo sur les maillots</h3><p>Porté à chaque match et chaque entraînement, et visible sur toutes les photos de l’équipe.</p><button type="button" class="try-link" data-open-studio>✎ Essayer avec mon commerce</button></article>
+          <article class="perk"><h3>Votre logo sur les maillots</h3><p>Porté à chaque match et chaque entraînement, et visible sur toutes les photos de l’équipe.</p><button type="button" class="try-link" data-open-studio>✎ Essayer sur un maillot</button></article>
           <article class="perk"><h3>Vu chaque week-end</h3><p>Au bord du terrain, aux tournois et sur les réseaux du club : votre nom tourne dans tout le quartier.</p></article>
           <article class="perk"><h3>Un stand au grand match</h3><p>Selon la formule, installez-vous sur place et vendez vos produits devant tout le public.</p></article>
           <article class="perk"><h3>60 % remboursés par l’État</h3><p>Votre don ouvre droit à une réduction d’impôt de 60 %. Par exemple :</p><div class="mini"><div><span>Don au club</span><b>300 €</b></div><div><span>Réduction d’impôt</span><b>− 180 €</b></div><div class="t"><span>Coût réel</span><b>120 €</b></div></div></article>
