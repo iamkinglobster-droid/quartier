@@ -55,7 +55,7 @@ nav a:hover { color: var(--ink) }
 /* Héros */
 .hero { padding-block: 56px 72px }
 .hero .grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 48px; align-items: center }
-.hero h1 { font-size: clamp(48px, 7vw, 92px) }
+.hero h1 { font-size: clamp(40px, 5.6vw, 72px) }
 .hero h1 em { font-style: normal; color: var(--accent-ink); text-decoration: underline; text-decoration-color: var(--lime); text-decoration-thickness: .09em; text-underline-offset: .1em }
 .hero .lead { font-size: 19px; color: var(--ink-soft); max-width: 34em; margin-top: 22px }
 .hero .ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px }
@@ -74,6 +74,45 @@ nav a:hover { color: var(--ink) }
 .row.total span { color: var(--ink); font-weight: 600 }
 .row.total b { font-size: 44px; color: var(--accent-ink) }
 .kit small { color: var(--muted); font-size: 12.5px }
+
+/* Avantages sous le maillot */
+.perks { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px }
+.perks li { display: flex; gap: 12px; align-items: baseline; font-size: 16px; color: var(--ink-soft) }
+.perks li::before { content: ""; flex: none; width: 12px; height: 12px; background: var(--lime); border-radius: 3px; transform: translateY(1px) }
+.perks b { color: var(--ink); font-weight: 600 }
+
+/* Avantages en tuiles */
+.gains { padding-block: 72px 80px }
+.gains .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 32px }
+.perk { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 22px; display: grid; gap: 10px; align-content: start; min-width: 0 }
+.perk svg { width: 30px; height: 30px; fill: none; stroke: var(--accent-ink); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round }
+.perk h3 { font-size: 22px; line-height: 1 }
+.perk p { color: var(--ink-soft); font-size: 15px }
+.perk.hot { background: var(--pitch); border-color: var(--pitch); color: #fff }
+.perk.hot svg { stroke: var(--lime) }
+.perk.hot p { color: var(--on-pitch) }
+@media (max-width: 980px) { .gains .grid { grid-template-columns: repeat(2, 1fr) } }
+@media (max-width: 520px) { .gains .grid { grid-template-columns: 1fr } }
+
+/* Prix réel */
+.price { padding-block: 0 80px }
+.price .box { background: var(--card); border: 1px solid var(--line); border-radius: 24px; padding: 32px; display: grid; grid-template-columns: .9fr 1.1fr; gap: 40px; align-items: center }
+.price .calc { gap: 14px }
+.price .row span { font-size: 17px }
+.price .row b { font-size: 34px }
+.price .row.total b { font-size: 64px }
+.price .pitch { display: grid; gap: 14px }
+.price .pitch p { color: var(--ink-soft); font-size: 18px; max-width: 30em }
+.price small { color: var(--muted); font-size: 12.5px }
+@media (max-width: 820px) { .price .box { grid-template-columns: 1fr; padding: 24px; gap: 24px } .price .row.total b { font-size: 48px } }
+
+/* Contact */
+.contact { padding-block: 0 80px }
+.contact .box { border: 2px solid var(--ink); border-radius: 24px; padding: 32px; display: flex; flex-wrap: wrap; gap: 20px 32px; align-items: center; justify-content: space-between }
+.contact h2 { font-size: clamp(30px, 4vw, 44px) }
+.contact p { color: var(--ink-soft); margin-top: 8px }
+.contact .mail { font: 700 clamp(20px, 3vw, 28px)/1.2 var(--body); color: var(--accent-ink); text-decoration: underline; text-decoration-color: var(--lime); text-decoration-thickness: 3px; text-underline-offset: 5px; overflow-wrap: anywhere }
+@media (max-width: 520px) { .contact .box { padding: 24px } }
 
 /* Sports */
 .sports { border-block: 1px solid var(--line); background: var(--card) }
@@ -173,6 +212,7 @@ footer .legal { font-size: 12.5px; max-width: 80ch }
       <a href="#clubs">Clubs</a>
       <a href="#etapes">Comment ça marche</a>
       <a href="#faq">Questions</a>
+      <a href="#contact">Contact</a>
     </nav>
     <a class="btn" href="#telecharger">Être prévenu</a>
   </div>
@@ -183,8 +223,8 @@ footer .legal { font-size: 12.5px; max-width: 80ch }
     <div class="wrap grid">
       <div>
         <p class="eyebrow">Clubs amateurs × commerces de quartier</p>
-        <h1 style="margin-top:14px">Votre logo sur les maillots. <em>60 % remboursés</em> par l’État.</h1>
-        <p class="lead">Quartier met en relation les clubs sportifs de jeunes et les commerces juste à côté. Le commerçant fait un don au club, son logo est porté à chaque match, et il récupère 60 % du montant en réduction d’impôt.</p>
+        <h1 style="margin-top:14px">Soutenez le club de votre quartier. <em>60 % remboursés</em> par l’État.</h1>
+        <p class="lead">Vous êtes commerçant ? Faites un don au club de jeunes d’à côté : votre logo s’affiche sur leurs maillots toute la saison, et l’État vous rend 60 % de la somme en réduction d’impôt.</p>
         <div class="ctas">
           <a class="btn" href="#commercants">Je suis commerçant</a>
           <a class="btn ghost" href="#clubs">Je suis un club</a>
@@ -192,7 +232,7 @@ footer .legal { font-size: 12.5px; max-width: 80ch }
         <p class="note">Gratuit pour les commerçants. Le club ne paie une commission que lorsqu’il reçoit un don.</p>
       </div>
 
-      <figure class="kit" aria-label="Exemple : un don de 300 euros coûte 120 euros après réduction d’impôt" style="margin:0">
+      <figure class="kit" aria-label="Ce que le commerçant obtient en soutenant un club" style="margin:0">
         <div class="stage"><svg class="shirt" viewBox="0 0 300 300" role="img" aria-label="Maillot de football bleu d’un club de quartier, avec son écusson et le logo de la pizzeria sponsor au centre">
           <defs>
             <linearGradient id="fab" x1="0" x2="1" y1="0" y2="0">
@@ -266,12 +306,11 @@ footer .legal { font-size: 12.5px; max-width: 80ch }
             <text x="150" y="178" text-anchor="middle" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-weight="700" font-size="10.5" textLength="54" lengthAdjust="spacingAndGlyphs" fill="#FFFFFF">PARIS 20e</text>
           </g>
         </svg></div>
-        <div class="calc">
-          <div class="row"><span>Don de Pizza Lino au club</span><b>300 €</b></div>
-          <div class="row"><span>Réduction d’impôt (60 %)</span><b>− 180 €</b></div>
-          <div class="row total"><span>Coût réel pour la pizzeria</span><b>120 €</b></div>
-        </div>
-        <small>Mécénat d’entreprise, article 238 bis du Code général des impôts. Reçu fiscal fourni automatiquement.</small>
+        <ul class="perks" aria-label="Ce que le commerçant obtient">
+          <li><span><b>Votre logo sur les maillots</b>, porté à chaque match</span></li>
+          <li><span><b>Vu par les familles</b> du quartier chaque week-end</span></li>
+          <li><span><b>Un stand au grand match</b> pour vendre sur place</span></li>
+        </ul>
       </figure>
     </div>
   </section>
@@ -279,6 +318,23 @@ footer .legal { font-size: 12.5px; max-width: 80ch }
   <div class="sports" aria-label="Sports proposés">
     <div class="wrap"><span>Football</span><span>Basket</span><span>Rugby</span><span>Handball</span><span>Et d’autres sports</span></div>
   </div>
+
+  <section class="gains" id="avantages">
+    <div class="wrap">
+      <p class="eyebrow">Pour les commerçants</p>
+      <h2 style="margin-top:10px">Ce que ça vous rapporte</h2>
+      <div class="grid">
+        <article class="perk hot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.6-7 10-7 10z"/></svg><h3>Une belle image dans le quartier</h3><p>Les habitants voient que vous soutenez leurs enfants. Vous devenez le commerce sympa qui aide le club.</p></article>
+        <article class="perk hot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10l9-6 9 6v10H3z M9 20v-6h6v6"/></svg><h3>De nouveaux clients</h3><p>Les parents, joueurs et supporters découvrent votre commerce et viennent chez vous. Entre voisins, on se rend service.</p></article>
+        <article class="perk"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3l-5 3 2 5 3-1v11h8V10l3 1 2-5-5-3c-1 2-2.5 3-4 3S9 5 8 3z"/></svg><h3>Votre logo sur les maillots</h3><p>Porté à chaque match et chaque entraînement, et sur toutes les photos de l’équipe.</p></article>
+        <article class="perk"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg><h3>Vu chaque week-end</h3><p>Au bord du terrain, aux tournois et sur les réseaux du club : votre nom tourne dans tout le quartier.</p></article>
+        <article class="perk"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10h16l-1-5H5z M5 10v10h14V10 M9 20v-5h6v5"/></svg><h3>Un stand au grand match</h3><p>Selon la formule, installez-vous sur place et vendez vos produits devant tout le public.</p></article>
+        <article class="perk"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19L19 5 M7 9a2 2 0 1 0 0-4 2 2 0 0 0 0 4z M17 19a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg><h3>60 % remboursés</h3><p>L’État vous rend 60 % du don en réduction d’impôt. Le reçu fiscal est fourni automatiquement.</p></article>
+        <article class="perk"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z M8.5 12l2.5 2.5 4.5-5"/></svg><h3>Vous payez seulement si c’est fait</h3><p>Chaque contrepartie est prouvée en photo. Sans preuve, sa part vous est remboursée.</p></article>
+        <article class="perk"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l4 4v14H7z M14 3v4h4 M10 13h5 M10 17h5"/></svg><h3>Zéro paperasse</h3><p>Convention signée en ligne, reçu prêt pour votre comptable : tout se passe dans l’appli.</p></article>
+      </div>
+    </div>
+  </section>
 
   <section class="duo">
     <div class="wrap">
@@ -307,6 +363,24 @@ footer .legal { font-size: 12.5px; max-width: 80ch }
           </ul>
           <a class="btn lime" href="#telecharger" data-kind="club">Inscrire mon club en avant-première</a>
         </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="price" id="prix">
+    <div class="wrap">
+      <div class="box">
+        <div class="pitch">
+          <p class="eyebrow">Combien ça coûte vraiment ?</p>
+          <h2>Moins que vous ne pensez</h2>
+          <p>Tous ces avantages pour un don de 300 € ? Grâce à la réduction d’impôt, il ne vous coûte en réalité que 120 €, pour toute une saison avec votre nom sur les maillots.</p>
+        </div>
+        <div class="calc" aria-label="Exemple : un don de 300 euros coûte 120 euros après réduction d’impôt">
+          <div class="row"><span>Don au club</span><b>300 €</b></div>
+          <div class="row"><span>L’État vous rembourse 60 %</span><b>− 180 €</b></div>
+          <div class="row total"><span>Ce que ça vous coûte</span><b>120 €</b></div>
+          <small>Mécénat d’entreprise, article 238 bis du Code général des impôts. Reçu fiscal fourni automatiquement.</small>
+        </div>
       </div>
     </div>
   </section>
@@ -348,6 +422,18 @@ footer .legal { font-size: 12.5px; max-width: 80ch }
         <details><summary>Et si le club ne fait pas ce qui était prévu ?</summary><p>L’argent est conservé par Quartier et versé au club contrepartie par contrepartie, à chaque preuve photo acceptée. Une contrepartie non prouvée dans les 45 jours est remboursée au commerçant.</p></details>
         <details><summary>Le club peut-il refuser un partenaire ?</summary><p>Oui. Chaque demande arrive au club, qui l’accepte en signant ou la refuse, par exemple si l’activité du commerce ne lui convient pas. Les secteurs alcool, tabac et paris sont exclus d’office.</p></details>
         <details><summary>Où l’argent est-il conservé ?</summary><p>Les paiements passent par Stripe, prestataire de paiement agréé. Quartier ne voit ni ne stocke aucun numéro de carte.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="wrap">
+      <div class="box">
+        <div>
+          <h2>Une question ?</h2>
+          <p>Club ou commerçant, écrivez-nous : on vous répond rapidement.</p>
+        </div>
+        <a class="mail" href="mailto:contact@quartier-app.fr">contact@quartier-app.fr</a>
       </div>
     </div>
   </section>
