@@ -223,6 +223,12 @@ footer .legal { font-size: 12.5px; max-width: 80ch }
 }
 
 /* --- v3 : site en trois pages --- */
+.hgrid { display: grid; grid-template-columns: 1.35fr .65fr; gap: 32px; align-items: center }
+.hgrid .art { margin: 0 }
+.hgrid .art .shirt { max-width: 340px; margin: 0 auto }
+@media (max-width: 860px) { .hgrid { grid-template-columns: 1fr } .hgrid .art { display: none } }
+.choose2 a .t { display: grid; gap: 6px }
+.choose2 a small { font: 500 14px/1.25 var(--body); text-transform: none; color: var(--on-pitch); white-space: normal }
 .sports .wrap { padding-block: 12px; font-size: 15px; gap: 8px 22px }
 .sports .lbl { font: 600 11px/1 var(--body); letter-spacing: .16em; color: var(--muted); text-transform: uppercase }
 .hero { padding-block: 44px 56px }
@@ -233,7 +239,7 @@ footer .legal { font-size: 12.5px; max-width: 80ch }
 .hero .lead { font-size: 20px; max-width: 34em; margin-top: 16px }
 .choose2 { margin-top: 26px }
 .choose2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 32px; max-width: 720px }
-.choose2 a { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 76px; padding: 0 26px; border-radius: 20px; background: var(--ink); color: var(--paper); text-decoration: none; font: 800 clamp(21px, 2.1vw, 26px)/1 var(--display); text-transform: uppercase; white-space: nowrap; transition: transform .15s }
+.choose2 a { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 84px; padding: 14px 24px; border-radius: 20px; background: var(--ink); color: var(--paper); text-decoration: none; font: 800 clamp(21px, 2.1vw, 26px)/1 var(--display); text-transform: uppercase; white-space: nowrap; transition: transform .15s }
 .choose2 a:hover { transform: translateY(-2px) }
 .choose2 a svg { width: 26px; height: 26px; flex: none; stroke: var(--lime); fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round }
 @media (max-width: 620px) { .choose2 { grid-template-columns: 1fr } }
@@ -253,8 +259,72 @@ footer .legal { font-size: 12.5px; max-width: 80ch }
 @media (max-width: 980px) { .gains .grid { grid-template-columns: repeat(2, 1fr) } }
 @media (max-width: 520px) { .gains .grid { grid-template-columns: 1fr } }
 .other { margin-top: 28px; font-weight: 600 }
+.try-link { color: var(--lime); font-weight: 600; font-size: 14.5px; text-underline-offset: 4px }
 .other a { color: var(--accent-ink) }
 nav a[aria-current="page"] { color: var(--ink); text-decoration: underline; text-decoration-color: var(--lime); text-decoration-thickness: 3px; text-underline-offset: 6px }
+
+/* --- Thème unique (même rendu en mode clair ou sombre) --- */
+:root:root:root {
+  --paper: #0D1611; --card: #15211A; --ink: #EEF2EC; --ink-soft: #C3CDC6; --muted: #92A098;
+  --line: #24352B; --accent-ink: #A9DCBD; --pitch: #123B2C; --pitch-deep: #0D1611; --on-pitch: #C9D6CF; --lime: #D8F24A; --lime-ink: #101511;
+  color-scheme: dark;
+}
+body { background: radial-gradient(900px 520px at 85% -8%, rgba(216,242,74,.13), transparent 62%), radial-gradient(800px 600px at -15% 35%, rgba(46,102,204,.13), transparent 60%), radial-gradient(700px 500px at 110% 85%, rgba(30,138,78,.14), transparent 60%), var(--paper) }
+header { background: rgba(13,22,17,.82); -webkit-backdrop-filter: saturate(140%) blur(12px); backdrop-filter: saturate(140%) blur(12px) }
+body::before { background: var(--paper) }
+.sports { background: transparent; border-color: var(--line) }
+.steps { background: transparent; border-block: 1px solid var(--line) }
+.cta { background: transparent; color: var(--ink) }
+.cta h2 { color: var(--ink) }
+.cta .store { background: var(--card); border: 1px solid var(--line) }
+.wait { background: var(--card); color: var(--ink); border: 1px solid var(--line) }
+.wait fieldset label { border-color: var(--line) }
+.wait fieldset label:has(input:checked) { border-color: var(--lime); background: transparent }
+.wait input[type=email] { background: var(--paper); color: var(--ink); border-color: var(--line) }
+.wait input[type=email]:focus { outline-color: var(--lime) }
+.wait .btn { background: var(--lime); border-color: var(--lime); color: var(--lime-ink) }
+.wait .msg.ok { color: var(--lime) } .wait .msg.err { color: #FF8A7A } .wait .fine { color: var(--muted) }
+.tile .k { color: var(--lime) }
+.perk, .tile, details { transition: border-color .2s }
+.perk:hover, .tile:hover { border-color: #3A5546 }
+.choose2 a { background: var(--lime); color: var(--lime-ink) }
+.choose2 a small { color: #33401C }
+.choose2 a svg { stroke: var(--lime-ink) }
+.btn { background: var(--ink); color: var(--paper); border-color: var(--ink) }
+.btn.ghost { background: transparent; color: var(--ink) }
+.hero h1 em { color: var(--lime); text-decoration: none }
+.perk > svg { stroke: var(--lime) }
+.perk .mini div.t b { color: var(--lime) }
+.contact .mail { color: var(--lime); text-decoration-color: rgba(216,242,74,.4) }
+.contact .box { border-color: var(--line); background: var(--card) }
+.other a, nav a[aria-current="page"] { color: var(--ink) }
+
+/* --- Essayeur de maillot --- */
+.art { display: grid; justify-items: center; gap: 12px; margin: 0; padding: 18px; background: rgba(255,255,255,.03); border: 1px solid var(--line); border-radius: 28px; cursor: pointer; color: var(--ink); font: inherit; transition: border-color .2s, transform .2s }
+.art:hover { border-color: var(--lime); transform: translateY(-2px) }
+.art .shirt { max-width: 320px; width: 100% }
+.art .hint { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 16px; border-radius: 999px; background: var(--lime); color: var(--lime-ink); font: 600 14.5px/1 var(--body) }
+.try-mobile { display: none; margin-top: 16px; background: none; border: 0; padding: 6px 0; color: var(--lime); font: 600 15.5px/1.3 var(--body); text-decoration: underline; text-underline-offset: 4px; cursor: pointer }
+@media (max-width: 860px) { .try-mobile { display: inline-block } }
+dialog.studio { width: min(860px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); padding: 0; border: 1px solid var(--line); border-radius: 26px; background: var(--card); color: var(--ink) }
+dialog.studio::backdrop { background: rgba(5,10,7,.72); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px) }
+.studio .in { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; padding: 28px; align-items: center }
+.studio .shirt { width: 100%; max-width: 360px; margin: 0 auto; display: block }
+.studio h2 { font-size: clamp(26px, 3.4vw, 36px) }
+.studio .ctl { display: grid; gap: 14px }
+.studio label.f { display: grid; gap: 6px; font-weight: 600; font-size: 14px }
+.studio input[type=text] { min-height: 48px; border-radius: 14px; border: 1.5px solid var(--line); background: var(--paper); color: var(--ink); padding: 0 14px; font: 400 16px var(--body) }
+.studio input[type=text]:focus { outline: 3px solid var(--lime); outline-offset: 1px }
+.studio .sw { display: flex; flex-wrap: wrap; gap: 10px; border: 0; padding: 0; margin: 0 }
+.studio .sw legend { font-weight: 600; font-size: 14px; margin-bottom: 8px }
+.studio .sw label { position: relative; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; border: 2px solid rgba(255,255,255,.25) }
+.studio .sw input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer }
+.studio .sw label:has(input:checked) { outline: 3px solid var(--lime); outline-offset: 2px }
+.studio .sw label:has(input:focus-visible) { outline: 3px solid var(--lime); outline-offset: 2px }
+.studio .x { position: absolute; top: 12px; right: 12px; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line); background: var(--paper); color: var(--ink); font-size: 22px; cursor: pointer }
+.studio .go { justify-self: start; background: var(--lime); border-color: var(--lime); color: var(--lime-ink) }
+.studio .fine2 { color: var(--muted); font-size: 12.5px }
+@media (max-width: 700px) { .studio .in { grid-template-columns: 1fr; padding: 22px; gap: 16px } .studio .shirt { max-width: 240px } }
 </style>
 </head>
 <body>
@@ -456,6 +526,46 @@ nav a[aria-current="page"] { color: var(--ink); text-decoration: underline; text
   const msg = document.getElementById('wait-msg');
   const email = document.getElementById('wait-email');
   const send = document.getElementById('wait-send');
+
+  // Essayeur de maillot (page d'accueil seulement)
+  const dlg = document.getElementById('studio');
+  if (dlg) {
+    const K = {
+      bleu: [['#14347A','#2152B0','#2E66CC','#1F4FAA','#122F70'], ['#2A5EC0','#173C86'], '#0F2A63', '#FFFFFF'],
+      rouge: [['#6E111C','#A81F2E','#C92C3B','#A31E2C','#650F19'], ['#BE2A38','#82161F'], '#550D15', '#FFFFFF'],
+      vert: [['#0D4426','#15693B','#1E8A4E','#156A3B','#0C3F23'], ['#1F8A50','#125A33'], '#0A341D', '#FFFFFF'],
+      noir: [['#0B0C0D','#1A1D1F','#2A2F32','#1A1D1F','#0A0B0C'], ['#2A2F32','#121415'], '#000000', '#FFFFFF'],
+      jaune: [['#B38B17','#DDAF27','#F2C94C','#D9AB25','#A98314'], ['#F0C443','#B98F1B'], '#6E540D', '#14212B'],
+      blanc: [['#BFC5CE','#E2E6EC','#FAFBFC','#DFE3E9','#B9BFC9'], ['#F2F4F7','#C3C9D2'], '#1F3A7A', '#14347A'],
+    };
+    const q = (sel) => dlg.querySelector(sel);
+    const nameEl = q('[data-name]'), cityEl = q('[data-city]'), tag = q('[data-tag]');
+    const fit = (el, txt, base, maxW, min) => {
+      const n = Math.max(txt.length, 1);
+      const fs = Math.max(min, Math.min(base, (maxW / (n * 0.5))));
+      el.textContent = txt; el.setAttribute('font-size', fs.toFixed(1));
+      el.setAttribute('textLength', Math.min(maxW, n * fs * 0.5).toFixed(1));
+      return Math.min(maxW, n * fs * 0.5);
+    };
+    const draw = () => {
+      const name = (document.getElementById('st-name').value.trim() || 'Pizza Lino').toUpperCase();
+      const city = (document.getElementById('st-city').value.trim() || 'Paris 20e').toUpperCase();
+      fit(nameEl, name, 36, 124, 16);
+      const w = fit(cityEl, city, 10.5, 70, 7);
+      tag.setAttribute('width', (w + 14).toFixed(1)); tag.setAttribute('x', (150 - (w + 14) / 2).toFixed(1));
+      const k = K[dlg.querySelector('input[name=kit]:checked').value];
+      dlg.querySelectorAll('[data-fab] stop').forEach((st, i) => st.setAttribute('stop-color', k[0][i]));
+      dlg.querySelectorAll('[data-slv] stop').forEach((st, i) => st.setAttribute('stop-color', k[1][i]));
+      dlg.querySelectorAll('[data-band]').forEach((b) => b.setAttribute('fill', k[2]));
+      nameEl.setAttribute('fill', k[3]);
+    };
+    dlg.addEventListener('input', draw);
+    const open = () => { draw(); dlg.showModal(); setTimeout(() => document.getElementById('st-name').focus(), 50); };
+    document.querySelectorAll('[data-open-studio]').forEach((b) => b.addEventListener('click', open));
+    q('[data-close]').addEventListener('click', () => dlg.close());
+    dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+    if (location.hash === '#essayer') open();
+  }
   const kindOf = () => form.querySelector('input[name=kind]:checked, input[type=hidden][name=kind]')?.value || 'shop';
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
