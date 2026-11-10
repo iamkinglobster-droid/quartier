@@ -305,6 +305,18 @@ body::before { background: var(--paper) }
 .contact .box { border-color: var(--line); background: var(--card) }
 .other a, nav a[aria-current="page"] { color: var(--ink) }
 
+/* --- Inscription : un seul bloc --- */
+.cta { padding-block: 24px 80px }
+.cta .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 28px 40px; align-items: center; background: var(--card); border: 1px solid var(--line); border-radius: 28px; padding: 36px 40px; max-width: 1040px; margin-inline: auto }
+.cta .cta-text { gap: 12px }
+.cta h2 { font-size: clamp(28px, 3.4vw, 40px); max-width: 12em }
+.cta .sub { color: var(--ink-soft); font-size: 16.5px; margin: 0 }
+.cta .stores { margin-top: 6px }
+.cta .store { background: var(--paper) }
+.wait { background: transparent; border: 0; padding: 0 }
+.wait .fine { margin: 0 }
+@media (max-width: 820px) { .cta .wrap { grid-template-columns: 1fr; padding: 24px 20px; margin-inline: 16px } }
+
 /* --- Essayeur de maillot --- */
 .art { display: grid; justify-items: center; gap: 12px; margin: 0; padding: 18px; background: rgba(255,255,255,.03); border: 1px solid var(--line); border-radius: 28px; cursor: pointer; color: var(--ink); font: inherit; transition: border-color .2s, transform .2s }
 .art:hover { border-color: var(--lime); transform: translateY(-2px) }
@@ -509,7 +521,7 @@ dialog.studio::backdrop { background: rgba(5,10,7,.72); -webkit-backdrop-filter:
     <div class="wrap">
       <div class="cta-text">
         <h2>Inscrivez votre club en avant-première</h2>
-        <small>L’application arrive bientôt sur iPhone et Android. Laissez votre e-mail : on vous prévient le jour du lancement.</small>
+        <p class="sub">L’appli arrive bientôt. On vous prévient le jour J.</p>
         <div class="stores" aria-label="Disponibilité">
           <span class="store">Bientôt sur<b>l’App Store</b></span>
           <span class="store">Bientôt sur<b>Google Play</b></span>
@@ -523,7 +535,7 @@ dialog.studio::backdrop { background: rgba(5,10,7,.72); -webkit-backdrop-filter:
           <button class="btn" type="submit" id="wait-send">Me prévenir</button>
         </div>
         <p class="msg" id="wait-msg" role="status" aria-live="polite"></p>
-        <p class="fine">Votre e-mail sert uniquement à vous prévenir du lancement. Aucune publicité, aucune revente.</p>
+        <p class="fine">Uniquement pour le lancement. Pas de pub.</p>
       </form>
     </div>
   </section>
