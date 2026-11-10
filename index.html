@@ -31,7 +31,7 @@ html { scroll-behavior: smooth }
 body { background: var(--paper); color: var(--ink); font: 400 17px/1.6 var(--body); margin: 0 }
 .wrap { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)) }
 h1, h2, h3 { font-family: var(--display); font-weight: 800; text-transform: uppercase; line-height: .95; letter-spacing: -.01em; margin: 0; text-wrap: balance }
-h2 { font-size: clamp(36px, 5vw, 56px) }
+h2 { font-size: clamp(28px, 3.6vw, 42px) }
 h3 { font-size: 26px; font-weight: 700 }
 p { margin: 0 }
 a { color: inherit }
@@ -54,8 +54,8 @@ nav a:hover { color: var(--ink) }
 
 /* Héros */
 .hero { padding-block: 56px 72px }
-.hero .grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 48px; align-items: center }
-.hero h1 { font-size: clamp(40px, 5.6vw, 72px) }
+.hero .grid { display: grid; grid-template-columns: 1.45fr .75fr; gap: 48px; align-items: center }
+.hero h1 { font-size: clamp(48px, 6.6vw, 88px) }
 .hero h1 em { font-style: normal; color: var(--accent-ink); text-decoration: underline; text-decoration-color: var(--lime); text-decoration-thickness: .09em; text-underline-offset: .1em }
 .hero .lead { font-size: 19px; color: var(--ink-soft); max-width: 34em; margin-top: 22px }
 .hero .ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px }
@@ -109,14 +109,14 @@ nav a:hover { color: var(--ink) }
 /* Contact */
 .contact { padding-block: 0 80px }
 .contact .box { border: 2px solid var(--ink); border-radius: 24px; padding: 32px; display: flex; flex-wrap: wrap; gap: 20px 32px; align-items: center; justify-content: space-between }
-.contact h2 { font-size: clamp(30px, 4vw, 44px) }
+.contact h2 { font-size: clamp(26px, 3.2vw, 36px) }
 .contact p { color: var(--ink-soft); margin-top: 8px }
 .contact .mail { font: 700 clamp(20px, 3vw, 28px)/1.2 var(--body); color: var(--accent-ink); text-decoration: underline; text-decoration-color: var(--lime); text-decoration-thickness: 3px; text-underline-offset: 5px; overflow-wrap: anywhere }
 @media (max-width: 520px) { .contact .box { padding: 24px } }
 
 /* Sports */
 .sports { border-block: 1px solid var(--line); background: var(--card) }
-.sports .wrap { display: flex; flex-wrap: wrap; gap: 10px 28px; align-items: center; justify-content: center; padding-block: 18px; font: 700 22px/1 var(--display); text-transform: uppercase; color: var(--ink-soft) }
+.sports .wrap { display: flex; flex-wrap: wrap; gap: 10px 28px; align-items: center; justify-content: center; padding-block: 14px; font: 700 16px/1 var(--display); text-transform: uppercase; color: var(--ink-soft) }
 
 /* Deux publics */
 .duo { padding-block: 80px }
@@ -501,6 +501,8 @@ footer .legal { font-size: 12.5px; max-width: 80ch }
     send.disabled = true; send.textContent = 'Envoi…';
     try {
       const res = await fetch(SUPABASE + '/rest/v1/waitlist', { method: 'POST', headers: { apikey: KEY, Authorization: 'Bearer ' + KEY, 'Content-Type': 'application/json', Prefer: 'return=minimal' }, body: JSON.stringify({ email: value, kind }) });
+      // Prévient Quartier par e-mail (sans bloquer le visiteur si ça échoue).
+      if (res.ok) fetch(SUPABASE + '/functions/v1/waitlist-notify', { method: 'POST', headers: { apikey: KEY, Authorization: 'Bearer ' + KEY, 'Content-Type': 'application/json' }, body: JSON.stringify({ email: value, kind }), keepalive: true }).catch(() => {});
       if (res.ok || res.status === 409) { msg.textContent = 'C’est noté ! On vous écrit le jour du lancement.'; msg.classList.add('ok'); form.reset(); document.getElementById('kind-' + kind).checked = true; }
       else throw new Error(String(res.status));
     } catch { msg.textContent = 'L’envoi n’a pas marché. Réessayez dans un instant.'; msg.classList.add('err'); }
