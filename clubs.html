@@ -226,7 +226,7 @@ footer .legal { font-size: 12.5px; max-width: 80ch }
 .hgrid { display: grid; grid-template-columns: 1.35fr .65fr; gap: 32px; align-items: center }
 .hgrid .art { margin: 0 }
 .hgrid .art .shirt { max-width: 340px; margin: 0 auto }
-@media (max-width: 860px) { .hgrid { grid-template-columns: 1fr } .hgrid .art { display: none } }
+@media (max-width: 860px) { .hgrid { grid-template-columns: 1fr; gap: 20px } .hgrid .art { grid-template-columns: 110px 1fr; justify-items: start; align-items: center; padding: 12px 16px; border-radius: 20px } .hgrid .art .shirt { max-width: 110px } .hgrid .art .hint { min-height: 38px } }
 .choose2 a .t { display: grid; gap: 6px }
 .choose2 a small { font: 500 14px/1.25 var(--body); text-transform: none; color: var(--on-pitch); white-space: normal }
 .sports .wrap { padding-block: 12px; font-size: 15px; gap: 8px 22px }
@@ -259,17 +259,20 @@ footer .legal { font-size: 12.5px; max-width: 80ch }
 @media (max-width: 980px) { .gains .grid { grid-template-columns: repeat(2, 1fr) } }
 @media (max-width: 520px) { .gains .grid { grid-template-columns: 1fr } }
 .other { margin-top: 28px; font-weight: 600 }
-.try-link { color: var(--lime); font-weight: 600; font-size: 14.5px; text-underline-offset: 4px }
+.try-link { justify-self: start; margin-top: 4px; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid var(--lime); background: transparent; color: var(--lime); font: 600 14.5px/1 var(--body); cursor: pointer }
+.try-link:hover { background: var(--lime); color: var(--lime-ink) }
+.perk h3 { margin-top: 2px }
+.perk { box-shadow: inset 0 3px 0 rgba(226,190,106,.85) }
 .other a { color: var(--accent-ink) }
 nav a[aria-current="page"] { color: var(--ink); text-decoration: underline; text-decoration-color: var(--lime); text-decoration-thickness: 3px; text-underline-offset: 6px }
 
 /* --- Thème unique (même rendu en mode clair ou sombre) --- */
 :root:root:root {
   --paper: #0D1611; --card: #15211A; --ink: #EEF2EC; --ink-soft: #C3CDC6; --muted: #92A098;
-  --line: #24352B; --accent-ink: #A9DCBD; --pitch: #123B2C; --pitch-deep: #0D1611; --on-pitch: #C9D6CF; --lime: #D8F24A; --lime-ink: #101511;
+  --line: #24352B; --accent-ink: #A9DCBD; --pitch: #123B2C; --pitch-deep: #0D1611; --on-pitch: #C9D6CF; --lime: #E2BE6A; --lime-ink: #101511;
   color-scheme: dark;
 }
-body { background: radial-gradient(900px 520px at 85% -8%, rgba(216,242,74,.13), transparent 62%), radial-gradient(800px 600px at -15% 35%, rgba(46,102,204,.13), transparent 60%), radial-gradient(700px 500px at 110% 85%, rgba(30,138,78,.14), transparent 60%), var(--paper) }
+body { background: radial-gradient(900px 520px at 85% -8%, rgba(226,190,106,.12), transparent 62%), radial-gradient(800px 600px at -15% 35%, rgba(46,102,204,.13), transparent 60%), radial-gradient(700px 500px at 110% 85%, rgba(30,138,78,.14), transparent 60%), var(--paper) }
 header { background: rgba(13,22,17,.82); -webkit-backdrop-filter: saturate(140%) blur(12px); backdrop-filter: saturate(140%) blur(12px) }
 body::before { background: var(--paper) }
 .sports { background: transparent; border-color: var(--line) }
@@ -288,14 +291,14 @@ body::before { background: var(--paper) }
 .perk, .tile, details { transition: border-color .2s }
 .perk:hover, .tile:hover { border-color: #3A5546 }
 .choose2 a { background: var(--lime); color: var(--lime-ink) }
-.choose2 a small { color: #33401C }
+.choose2 a small { color: #4A3913 }
 .choose2 a svg { stroke: var(--lime-ink) }
 .btn { background: var(--ink); color: var(--paper); border-color: var(--ink) }
 .btn.ghost { background: transparent; color: var(--ink) }
 .hero h1 em { color: var(--lime); text-decoration: none }
 .perk > svg { stroke: var(--lime) }
 .perk .mini div.t b { color: var(--lime) }
-.contact .mail { color: var(--lime); text-decoration-color: rgba(216,242,74,.4) }
+.contact .mail { color: var(--lime); text-decoration-color: rgba(226,190,106,.45) }
 .contact .box { border-color: var(--line); background: var(--card) }
 .other a, nav a[aria-current="page"] { color: var(--ink) }
 
@@ -305,7 +308,7 @@ body::before { background: var(--paper) }
 .art .shirt { max-width: 320px; width: 100% }
 .art .hint { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 16px; border-radius: 999px; background: var(--lime); color: var(--lime-ink); font: 600 14.5px/1 var(--body) }
 .try-mobile { display: none; margin-top: 16px; background: none; border: 0; padding: 6px 0; color: var(--lime); font: 600 15.5px/1.3 var(--body); text-decoration: underline; text-underline-offset: 4px; cursor: pointer }
-@media (max-width: 860px) { .try-mobile { display: inline-block } }
+
 dialog.studio { width: min(860px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); padding: 0; border: 1px solid var(--line); border-radius: 26px; background: var(--card); color: var(--ink) }
 dialog.studio::backdrop { background: rgba(5,10,7,.72); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px) }
 .studio .in { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; padding: 28px; align-items: center }
@@ -344,21 +347,14 @@ dialog.studio::backdrop { background: rgba(5,10,7,.72); -webkit-backdrop-filter:
 
 <main id="top">
   <section class="hero">
-    <div class="wrap grid">
-      <p class="eyebrow">Pour les clubs</p>
-      <h1 style="margin-top:14px">Financez votre club grâce au quartier.</h1>
-      <p class="lead">Publiez vos offres de partenariat, les commerces d’à côté vous soutiennent. De quoi financer maillots, déplacements et tournois, sans démarchage.</p>
-      <div class="ctas"><a class="btn" href="#telecharger">Inscrire mon club en avant-première</a></div>
-    </div>
-  </section>
-
-  <section class="gains" id="avantages">
-    <div class="wrap">
-      <h2>Ce que ça rapporte au club</h2>
-      <div class="grid">
-          <article class="perk"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z M15 9.5a3.5 3.5 0 1 0 0 5 M8 11h5 M8 13h5"/></svg><h3>De l’argent pour la saison</h3><p>Maillots, déplacements, tournois, matériel : financez le club sans augmenter les cotisations des familles.</p></article>
-          <article class="perk"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v12H8l-4 4z M8 9h8 M8 12h5"/></svg><h3>Les commerçants viennent à vous</h3><p>Publiez vos offres une fois : les commerces du quartier vous trouvent dans l’appli. Fini le porte-à-porte.</p></article>
-          <article class="perk"><svg class="shirt" aria-hidden="true" viewBox="10 26 280 252">
+    <div class="wrap hgrid">
+      <div>
+        <p class="eyebrow">Pour les clubs</p>
+        <h1 style="margin-top:14px">Financez votre club <em>grâce au quartier.</em></h1>
+        <p class="lead">Publiez vos offres de partenariat, les commerces d’à côté vous soutiennent. De quoi financer maillots, déplacements et tournois, sans démarchage.</p>
+        <div class="ctas"><a class="btn lime" href="#telecharger">Inscrire mon club en avant-première</a></div>
+      </div>
+      <button type="button" class="art" data-open-studio aria-haspopup="dialog"><svg class="shirt" viewBox="0 0 300 300" role="img" aria-label="Maillot de football bleu d’un club de quartier, avec son écusson et le logo de la pizzeria sponsor au centre">
           <defs>
             <linearGradient id="fab" x1="0" x2="1" y1="0" y2="0">
               <stop offset="0" stop-color="#14347A"/><stop offset=".17" stop-color="#2152B0"/><stop offset=".5" stop-color="#2E66CC"/><stop offset=".83" stop-color="#1F4FAA"/><stop offset="1" stop-color="#122F70"/>
@@ -430,12 +426,109 @@ dialog.studio::backdrop { background: rgba(5,10,7,.72); -webkit-backdrop-filter:
             <rect x="116" y="167" width="68" height="14" rx="2" fill="#C8102E"/>
             <text x="150" y="178" text-anchor="middle" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-weight="700" font-size="10.5" textLength="54" lengthAdjust="spacingAndGlyphs" fill="#FFFFFF">PARIS 20e</text>
           </g>
-        </svg><h3>Vos sponsors sur vos maillots</h3><p>Le logo du commerçant sur vos maillots, une banderole, des posts, un stand au grand match : c’est vous qui proposez.</p></article>
-          <article class="perk"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19L19 5 M7 9a2 2 0 1 0 0-4 2 2 0 0 0 0 4z M17 19a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg><h3>Un argument qui convainc</h3><p>Le commerçant récupère 60 % de son don en impôt : 300 € ne lui coûtent que 120 €. Bien plus facile à accepter.</p></article>
-          <article class="perk"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12V4h8l10 10-8 8z M7.5 8.5h.01"/></svg><h3>Vous fixez vos prix</h3><p>Créez vos formules et vos contreparties en quelques minutes, au prix que vous voulez.</p></article>
-          <article class="perk"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z M2 21a7 7 0 0 1 14 0 M16 11l2 2 4-4"/></svg><h3>Vous choisissez vos partenaires</h3><p>Chaque demande attend votre accord et votre signature. Un commerce ne vous convient pas ? Refusez-le.</p></article>
-          <article class="perk"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10l9-6 9 6 M5 10v8 M9 10v8 M15 10v8 M19 10v8 M3 21h18"/></svg><h3>Argent versé, zéro paperasse</h3><p>Chaque preuve photo validée débloque sa part sur le compte du club. Conventions et reçus fiscaux sont faits pour vous.</p></article>
-          <article class="perk"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12v9H4v-9 M2 7h20v5H2z M12 21V7 M12 7c-2-4-6-4-6-1.5S9 7 12 7c3 0 6-.5 6-1.5S14 3 12 7"/></svg><h3>Rien à payer pour commencer</h3><p>Pas d’abonnement : Quartier prend 10 % seulement sur les dons reçus. Par exemple :</p><div class="mini"><div><span>Don reçu</span><b>300 €</b></div><div><span>Commission (10 %)</span><b>− 30 €</b></div><div class="t"><span>Pour le club</span><b>270 €</b></div></div></article>
+        </svg><span class="hint">✎ Voir votre maillot sponsorisé</span></button>
+    </div>
+  </section>
+
+  <dialog class="studio" id="studio" aria-labelledby="studio-title">
+    <button type="button" class="x" data-close aria-label="Fermer">×</button>
+    <div class="in">
+      <svg class="shirt" id="studio-shirt" viewBox="0 0 300 300" role="img" aria-label="Aperçu du maillot avec votre commerce">
+          <defs>
+            <linearGradient id="fab-s" data-fab x1="0" x2="1" y1="0" y2="0">
+              <stop offset="0" stop-color="#14347A"/><stop offset=".17" stop-color="#2152B0"/><stop offset=".5" stop-color="#2E66CC"/><stop offset=".83" stop-color="#1F4FAA"/><stop offset="1" stop-color="#122F70"/>
+            </linearGradient>
+            <linearGradient id="fabv-s" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset=".75" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".10"/>
+            </linearGradient>
+            <linearGradient id="slv-s" data-slv x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0" stop-color="#2A5EC0"/><stop offset="1" stop-color="#173C86"/>
+            </linearGradient>
+            <linearGradient id="lime-s" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#D9DEE8"/>
+            </linearGradient>
+            <pattern id="mesh-s" width="4" height="4" patternUnits="userSpaceOnUse">
+              <circle cx="1" cy="1" r=".55" fill="#000" fill-opacity=".12"/><circle cx="3" cy="3" r=".55" fill="#000" fill-opacity=".09"/>
+            </pattern>
+            <filter id="soft-s" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="3"/></filter>
+            <filter id="drop-s" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="7"/></filter>
+            <clipPath id="body-s"><path d="M112 30 L80 41 L72 112 L70 268 C110 279 190 279 230 268 L228 112 L220 41 L188 30 C180 50 164 59 150 59 C136 59 120 50 112 30 Z"/></clipPath>
+          </defs>
+          <ellipse cx="150" cy="284" rx="96" ry="7" fill="#000" opacity=".18" filter="url(#drop-s)"/>
+          <!-- manches -->
+          <path d="M80 41 L44 60 C30 74 20 92 13 110 L52 128 L72 112 Z" fill="url(#slv-s)"/>
+          <path d="M220 41 L256 60 C270 74 280 92 287 110 L248 128 L228 112 Z" fill="url(#slv-s)" transform="translate(0 0)"/>
+          <path d="M13 110 L52 128 L56 119 L18 101 Z" fill="url(#lime-s)"/>
+          <path d="M287 110 L248 128 L244 119 L282 101 Z" fill="url(#lime-s)"/>
+          <path d="M80 41 C70 70 70 92 72 112" fill="none" stroke="#8FB0EA" stroke-opacity=".55" stroke-width="1" stroke-dasharray="2 2.5"/>
+          <path d="M220 41 C230 70 230 92 228 112" fill="none" stroke="#8FB0EA" stroke-opacity=".55" stroke-width="1" stroke-dasharray="2 2.5"/>
+          <!-- corps -->
+          <path d="M112 30 L80 41 L72 112 L70 268 C110 279 190 279 230 268 L228 112 L220 41 L188 30 C180 50 164 59 150 59 C136 59 120 50 112 30 Z" fill="url(#fab-s)"/>
+          <g clip-path="url(#body-s)">
+            <rect x="60" y="20" width="180" height="270" fill="url(#mesh-s)"/>
+            <rect x="60" y="20" width="180" height="270" fill="url(#fabv-s)"/>
+            <!-- bandes latérales -->
+            <path d="M72 112 L84 108 L82 280 L66 280 Z" fill="#0F2A63" data-band/>
+            <path d="M228 112 L216 108 L218 280 L234 280 Z" fill="#0F2A63" data-band/>
+            <path d="M84 108 L88 108 L86 280 L82 280 Z" fill="#FFFFFF"/>
+            <path d="M216 108 L212 108 L214 280 L218 280 Z" fill="#FFFFFF"/>
+            <!-- plis du tissu -->
+            <g fill="none" stroke="#061638" stroke-linecap="round" filter="url(#soft-s)">
+              <path d="M98 70 C112 110 104 150 112 196" stroke-width="6" opacity=".13"/>
+              <path d="M204 76 C190 120 198 168 186 214" stroke-width="7" opacity=".12"/>
+              <path d="M120 214 C140 226 168 226 186 236" stroke-width="5" opacity=".10"/>
+              <path d="M150 64 C146 80 154 92 150 104" stroke-width="4" opacity=".08"/>
+            </g>
+            <path d="M74 262 C112 272 188 272 226 262" fill="none" stroke="#8FB0EA" stroke-opacity=".55" stroke-width="1" stroke-dasharray="2 2.5"/>
+          </g>
+          <!-- col -->
+          <path d="M112 30 C120 50 136 59 150 59 C164 59 180 50 188 30 L180 26 C173 44 162 51 150 51 C138 51 127 44 120 26 Z" fill="url(#lime-s)"/>
+          <path d="M120 26 C127 44 138 51 150 51 C162 51 173 44 180 26" fill="none" stroke="#14347A" stroke-opacity=".35" stroke-width="1"/>
+          <path d="M88 39 L112 30 M212 39 L188 30" stroke="#8FB0EA" stroke-opacity=".55" stroke-width="1" stroke-dasharray="2 2.5"/>
+          <!-- écusson du club (côté cœur) : club inventé « Étoile Sportive du 20e » -->
+          <g transform="translate(180 72)">
+            <path d="M0 0 H32 V18 C32 31 22 38 16 42 C10 38 0 31 0 18 Z" fill="#FFFFFF"/>
+            <path d="M2.5 2.5 H29.5 V18 C29.5 29.5 20.5 35.5 16 39 C11.5 35.5 2.5 29.5 2.5 18 Z" fill="#14347A"/>
+            <path d="M2.5 2.5 H29.5 V10 H2.5 Z" fill="#C8102E"/>
+            <text x="16" y="8.8" text-anchor="middle" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-weight="800" font-size="6.6" textLength="20" lengthAdjust="spacingAndGlyphs" fill="#FFFFFF">E.S. 20</text>
+            <circle cx="16" cy="21" r="7" fill="#FFFFFF"/>
+            <path d="M16 17.2 L19.4 19.7 L18.1 23.7 H13.9 L12.6 19.7 Z" fill="#14347A"/>
+            <path d="M16 14 V17.2 M19.4 19.7 L22.6 18.6 M18.1 23.7 L20.1 26.6 M13.9 23.7 L11.9 26.6 M12.6 19.7 L9.4 18.6" stroke="#14347A" stroke-width=".9"/>
+            <text x="16" y="34.6" text-anchor="middle" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-weight="700" font-size="5.2" letter-spacing=".5" fill="#FFFFFF">1974</text>
+          </g>
+          <path d="M196 64 l1.6 3.2 3.5 .5 -2.5 2.5 .6 3.5 -3.2 -1.7 -3.2 1.7 .6 -3.5 -2.5 -2.5 3.5 -.5 Z" fill="#F2C230"/>
+          <!-- petite marque d'équipementier (inventée) -->
+          <g transform="translate(103 86)" fill="#FFFFFF"><path d="M0 9 L7 0 L10 0 L5 9 Z"/><path d="M6 9 L13 0 L16 0 L11 9 Z"/></g>
+          <!-- sponsor imprimé -->
+          <g opacity=".95">
+            <text data-name x="150" y="160" text-anchor="middle" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-weight="800" font-size="36" textLength="112" lengthAdjust="spacingAndGlyphs" fill="#FFFFFF">PIZZA LINO</text>
+            <rect data-tag x="116" y="167" width="68" height="14" rx="2" fill="#C8102E"/>
+            <text data-city x="150" y="178" text-anchor="middle" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-weight="700" font-size="10.5" textLength="54" lengthAdjust="spacingAndGlyphs" fill="#FFFFFF">PARIS 20e</text>
+          </g>
+        </svg>
+      <div class="ctl">
+        <h2 id="studio-title">Votre commerce sur le maillot</h2>
+        <label class="f">Nom de votre commerce<input type="text" id="st-name" maxlength="16" placeholder="ex. Boulangerie Paul" autocomplete="organization"></label>
+        <label class="f">Ville ou quartier<input type="text" id="st-city" maxlength="14" placeholder="ex. Lyon 7e"></label>
+        <fieldset class="sw"><legend>Couleur du maillot</legend><label style="background:#2E66CC" title="Bleu"><input type="radio" name="kit" value="bleu" checked aria-label="Maillot bleu"></label><label style="background:#CC2E3D" title="Rouge"><input type="radio" name="kit" value="rouge" aria-label="Maillot rouge"></label><label style="background:#1E8A4E" title="Vert"><input type="radio" name="kit" value="vert" aria-label="Maillot vert"></label><label style="background:#2A2F32" title="Noir"><input type="radio" name="kit" value="noir" aria-label="Maillot noir"></label><label style="background:#F2C94C" title="Jaune"><input type="radio" name="kit" value="jaune" aria-label="Maillot jaune"></label><label style="background:#F2F4F7" title="Blanc"><input type="radio" name="kit" value="blanc" aria-label="Maillot blanc"></label></fieldset>
+        <a class="btn go" href="#telecharger">Inscrire mon club en avant-première</a>
+        <p class="fine2">Simple aperçu : sur le vrai maillot, c’est votre logo que le club imprime.</p>
+      </div>
+    </div>
+  </dialog>
+
+  <section class="gains" id="avantages">
+    <div class="wrap">
+      <h2>Ce que ça rapporte au club</h2>
+      <div class="grid">
+          <article class="perk"><h3>De l’argent pour la saison</h3><p>Maillots, déplacements, tournois, matériel : financez le club sans augmenter les cotisations des familles.</p></article>
+          <article class="perk"><h3>Les commerçants viennent à vous</h3><p>Publiez vos offres une fois : les commerces du quartier vous trouvent dans l’appli. Fini le porte-à-porte.</p></article>
+          <article class="perk"><h3>Vos sponsors sur vos maillots</h3><p>Le logo du commerçant sur vos maillots, une banderole, des posts, un stand au grand match : c’est vous qui proposez.</p><button type="button" class="try-link" data-open-studio>✎ Voir un exemple</button></article>
+          <article class="perk"><h3>Un argument qui convainc</h3><p>Le commerçant récupère 60 % de son don en impôt : 300 € ne lui coûtent que 120 €. Bien plus facile à accepter.</p></article>
+          <article class="perk"><h3>Vous fixez vos prix</h3><p>Créez vos formules et vos contreparties en quelques minutes, au prix que vous voulez.</p></article>
+          <article class="perk"><h3>Vous choisissez vos partenaires</h3><p>Chaque demande attend votre accord et votre signature. Un commerce ne vous convient pas ? Refusez-le.</p></article>
+          <article class="perk"><h3>Argent versé, zéro paperasse</h3><p>Chaque preuve photo validée débloque sa part sur le compte du club. Conventions et reçus fiscaux sont faits pour vous.</p></article>
+          <article class="perk"><h3>Rien à payer pour commencer</h3><p>Pas d’abonnement : Quartier prend 10 % seulement sur les dons reçus. Par exemple :</p><div class="mini"><div><span>Don reçu</span><b>300 €</b></div><div><span>Commission (10 %)</span><b>− 30 €</b></div><div class="t"><span>Pour le club</span><b>270 €</b></div></div></article>
       </div>
       <p class="other">Vous êtes commerçant ? <a href="commercants.html">Voir la page des commerçants</a></p>
     </div>
@@ -563,6 +656,7 @@ dialog.studio::backdrop { background: rgba(5,10,7,.72); -webkit-backdrop-filter:
     const open = () => { draw(); dlg.showModal(); setTimeout(() => document.getElementById('st-name').focus(), 50); };
     document.querySelectorAll('[data-open-studio]').forEach((b) => b.addEventListener('click', open));
     q('[data-close]').addEventListener('click', () => dlg.close());
+    q('.go').addEventListener('click', () => dlg.close());
     dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
     if (location.hash === '#essayer') open();
   }
