@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Clubs · Quartier</title>
+<meta name="description" content="Financez votre club grâce aux commerces de votre quartier, sans démarchage.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Instrument+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* Layout : bandes pleine largeur (papier / pelouse), contenu centré à 1120px ; le héros oppose le titre et un « maillot » qui montre le calcul du don. */
+:root {
+  --paper: #F3F4F0; --card: #FFFFFF; --ink: #101511; --ink-soft: #3E4540; --muted: #5B625C;
+  --line: #E1E4DC; --accent-ink: #1C5A40; --pitch: #123B2C; --pitch-deep: #0D2E22; --on-pitch: #C9D6CF; --lime: #D8F24A; --lime-ink: #101511;
+  --display: "Barlow Condensed", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --body: "Instrument Sans", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --r: 18px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #0F1712; --card: #17211B; --ink: #EEF2EC; --ink-soft: #C2CCC5; --muted: #93A097;
+  --line: #2A3830; --accent-ink: #9FD0B4; --pitch: #123B2C; --pitch-deep: #0A2219; --on-pitch: #C9D6CF; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --paper: #0F1712; --card: #17211B; --ink: #EEF2EC; --ink-soft: #C2CCC5; --muted: #93A097;
+  --line: #2A3830; --accent-ink: #9FD0B4; --pitch: #123B2C; --pitch-deep: #0A2219; --on-pitch: #C9D6CF; color-scheme: dark }
+
+* { box-sizing: border-box }
+html { scroll-behavior: smooth }
+[id] { scroll-margin-top: 88px }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto } }
+body { background: var(--paper); color: var(--ink); font: 400 17px/1.6 var(--body); margin: 0 }
+.wrap { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)) }
+h1, h2, h3 { font-family: var(--display); font-weight: 800; text-transform: uppercase; line-height: .95; letter-spacing: -.01em; margin: 0; text-wrap: balance }
+h2 { font-size: clamp(28px, 3.6vw, 42px) }
+h3 { font-size: 26px; font-weight: 700 }
+p { margin: 0 }
+a { color: inherit }
+a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px solid var(--lime); outline-offset: 3px; border-radius: 6px }
+.eyebrow { font: 600 12px/1 var(--body); letter-spacing: .16em; text-transform: uppercase; color: var(--muted) }
+
+/* En-tête */
+header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--paper); border-bottom: 1px solid var(--line) }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--paper) }
+.bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px }
+.mark { font: 800 30px/1 var(--display); text-decoration: none; display: inline-flex; align-items: baseline; gap: 4px }
+.mark i { width: 11px; height: 11px; background: var(--lime); display: inline-block; outline: 2px solid var(--ink); outline-offset: -2px }
+nav { display: flex; gap: 22px; font-weight: 500; font-size: 15px }
+nav a { text-decoration: none; color: var(--ink-soft) }
+nav a:hover { color: var(--ink) }
+.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 22px; border-radius: 999px; font: 600 15.5px/1 var(--body); text-decoration: none; border: 2px solid var(--ink); background: var(--ink); color: var(--paper) }
+.btn.lime { background: var(--lime); color: var(--lime-ink); border-color: var(--lime) }
+.btn.ghost { background: transparent; color: inherit }
+@media (max-width: 760px) { nav { display: none } }
+
+/* Héros */
+.hero { padding-block: 56px 72px }
+.hero .grid { display: block }
+.hero h1 { max-width: 12em }
+.hero h1 { font-size: clamp(48px, 6.6vw, 88px) }
+.hero h1 em { font-style: normal; color: var(--accent-ink); text-decoration: underline; text-decoration-color: var(--lime); text-decoration-thickness: .09em; text-underline-offset: .1em }
+.hero .lead { font-size: 20px; color: var(--ink-soft); max-width: 36em; margin-top: 22px }
+.hero .ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px }
+.hero .note { margin-top: 14px; font-size: 13.5px; color: var(--muted) }
+@media (max-width: 880px) { .hero .grid { grid-template-columns: 1fr } }
+
+/* Maillot + calcul */
+.show { display: grid; grid-template-columns: .8fr 1.2fr; gap: 40px; align-items: center; margin-top: 28px; background: var(--card); border: 1px solid var(--line); border-radius: 24px; padding: 28px 36px }
+.show .txt { display: grid; gap: 12px; min-width: 0 }
+.show h3 { font-size: clamp(26px, 3vw, 36px) }
+.show p { color: var(--ink-soft); font-size: 17px; max-width: 34em }
+.show small { color: var(--muted); font-size: 13px }
+@media (max-width: 820px) { .show { grid-template-columns: 1fr; padding: 22px; gap: 16px } .show .shirt { max-width: 240px } }
+.shirt { width: 100%; max-width: 300px; height: auto; margin: 0 auto; display: block }
+.calc { display: grid; gap: 10px }
+.row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-variant-numeric: tabular-nums }
+.row span { color: var(--ink-soft); font-size: 15px; min-width: 0 }
+.row b { font: 800 28px/1 var(--display); white-space: nowrap; color: var(--ink) }
+.row.total { border-top: 1px solid var(--ink); padding-top: 12px }
+.row.total span { color: var(--ink); font-weight: 600 }
+.row.total b { font-size: 44px; color: var(--accent-ink) }
+.kit small { color: var(--muted); font-size: 12.5px }
+
+/* Avantages sous le maillot */
+.perks { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px }
+.perks li { display: flex; gap: 12px; align-items: baseline; font-size: 16px; color: var(--ink-soft) }
+.perks li::before { content: ""; flex: none; width: 12px; height: 12px; background: var(--lime); border-radius: 3px; transform: translateY(1px) }
+.perks b { color: var(--ink); font-weight: 600 }
+
+/* Avantages en tuiles */
+.gains { padding-block: 72px 80px }
+.gains .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 28px }
+.perk { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 22px; display: grid; gap: 10px; align-content: start; min-width: 0 }
+.perk svg { width: 30px; height: 30px; fill: none; stroke: var(--accent-ink); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round }
+.perk h3 { font-size: 22px; line-height: 1 }
+.perk p { color: var(--ink-soft); font-size: 15px }
+.perk.hot { background: var(--pitch); border-color: var(--pitch); color: #fff }
+.perk.hot svg { stroke: var(--lime) }
+.perk.hot p { color: var(--on-pitch) }
+@media (max-width: 980px) { .gains .grid { grid-template-columns: repeat(2, 1fr) } }
+@media (max-width: 520px) { .gains .grid { grid-template-columns: 1fr } }
+
+body[data-aud="shop"] [data-for="club"], body[data-aud="club"] [data-for="shop"] { display: none !important }
+.switch { display: inline-flex; align-items: center; gap: 4px; padding: 4px; background: var(--card); border: 1px solid var(--line); border-radius: 999px; margin-bottom: 22px; flex-wrap: wrap }
+.switch > span { font-size: 13.5px; color: var(--muted); padding: 0 10px 0 12px }
+.switch button { min-height: 42px; padding: 0 18px; border: 0; border-radius: 999px; background: transparent; color: var(--ink-soft); font: 600 15px/1 var(--body); cursor: pointer }
+.switch button[aria-pressed="true"] { background: var(--ink); color: var(--paper) }
+.panel[hidden] { display: none }
+.panel .btn { margin-top: 24px }
+.price .duo2 { display: grid; grid-template-columns: minmax(0, 640px); gap: 20px; margin-top: 28px }
+.price .card2 { background: var(--card); border: 1px solid var(--line); border-radius: 24px; padding: 28px; display: grid; gap: 14px; align-content: start }
+.price .card2.club { background: var(--pitch); border-color: var(--pitch); color: #fff }
+.price .card2.club .row span, .price .card2.club small, .price .card2.club .eyebrow { color: var(--on-pitch) }
+.price .card2.club .row b { color: #fff }
+.price .card2.club .row.total { border-top-color: var(--lime) }
+.price .card2.club .row.total b { color: var(--lime) }
+@media (max-width: 820px) { .price .duo2 { grid-template-columns: 1fr } .price .card2 { padding: 22px } }
+
+/* Prix réel */
+.price { padding-block: 0 80px }
+.price .box { background: var(--card); border: 1px solid var(--line); border-radius: 24px; padding: 32px; display: grid; grid-template-columns: .9fr 1.1fr; gap: 40px; align-items: center }
+.price .calc { gap: 14px }
+.price .row span { font-size: 17px }
+.price .row b { font-size: 34px }
+.price .row.total b { font-size: 64px }
+.price .pitch { display: grid; gap: 14px }
+.price .pitch p { color: var(--ink-soft); font-size: 18px; max-width: 30em }
+.price small { color: var(--muted); font-size: 12.5px }
+@media (max-width: 820px) { .price .box { grid-template-columns: 1fr; padding: 24px; gap: 24px } .price .row.total b { font-size: 48px } }
+
+/* Contact */
+.contact { padding-block: 0 80px }
+.contact .box { border: 2px solid var(--ink); border-radius: 24px; padding: 32px; display: flex; flex-wrap: wrap; gap: 20px 32px; align-items: center; justify-content: space-between }
+.contact h2 { font-size: clamp(26px, 3.2vw, 36px) }
+.contact p { color: var(--ink-soft); margin-top: 8px }
+.contact .mail { font: 700 clamp(20px, 3vw, 28px)/1.2 var(--body); color: var(--accent-ink); text-decoration: underline; text-decoration-color: var(--lime); text-decoration-thickness: 3px; text-underline-offset: 5px; overflow-wrap: anywhere }
+@media (max-width: 520px) { .contact .box { padding: 24px } }
+
+/* Sports */
+.sports { border-block: 1px solid var(--line); background: var(--card) }
+.sports .wrap { display: flex; flex-wrap: wrap; gap: 10px 28px; align-items: center; justify-content: center; padding-block: 14px; font: 700 16px/1 var(--display); text-transform: uppercase; color: var(--ink-soft) }
+
+/* Deux publics */
+.duo { padding-block: 80px }
+.duo .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 32px }
+.side { border-radius: 24px; padding: 30px; display: grid; gap: 16px; align-content: start }
+.side.shop { background: var(--card); border: 1px solid var(--line) }
+.side.club { background: var(--pitch); color: #fff }
+.side.club .eyebrow, .side.club li { color: var(--on-pitch) }
+.side ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 12px }
+.side li { padding-left: 30px; position: relative; color: var(--ink-soft) }
+.side li::before { content: ""; position: absolute; left: 0; top: .45em; width: 14px; height: 14px; background: var(--lime); border-radius: 3px }
+.side li b { color: inherit; font-weight: 600 }
+.side.club li b { color: #fff }
+.side .btn { justify-self: start; margin-top: 6px }
+@media (max-width: 820px) { .duo .grid { grid-template-columns: 1fr } }
+
+/* Étapes : vraie séquence */
+.steps { background: var(--pitch-deep); color: #fff; padding-block: 80px }
+.steps h2 { color: #fff }
+.steps .eyebrow { color: var(--lime) }
+.steps ol { list-style: none; margin: 36px 0 0; padding: 0; display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; counter-reset: s }
+.steps li { counter-increment: s; border-top: 3px solid var(--lime); padding-top: 14px; display: grid; gap: 8px; align-content: start; min-width: 0 }
+.steps li::before { content: counter(s); font: 800 44px/1 var(--display); color: var(--lime) }
+.steps li b { font: 700 21px/1.05 var(--display); text-transform: uppercase }
+.steps li p { color: var(--on-pitch); font-size: 15px }
+@media (max-width: 980px) { .steps ol { grid-template-columns: 1fr 1fr } }
+@media (max-width: 520px) { .steps ol { grid-template-columns: 1fr } }
+
+/* Confiance */
+.trust { padding-block: 80px }
+.trust .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 32px }
+.tile { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 24px; display: grid; gap: 10px; align-content: start }
+.tile .k { font: 800 40px/1 var(--display); color: var(--pitch) }
+:root[data-theme="dark"] .tile .k { color: var(--lime) }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .tile .k { color: var(--lime) } }
+.tile p { color: var(--ink-soft); font-size: 15.5px }
+@media (max-width: 820px) { .trust .grid { grid-template-columns: 1fr } }
+
+/* FAQ */
+.faq { padding-block: 0 80px }
+.faq .list { margin-top: 28px; border-top: 1px solid var(--line) }
+details { border-bottom: 1px solid var(--line) }
+summary { list-style: none; cursor: pointer; padding: 20px 40px 20px 0; position: relative; font-weight: 600; font-size: 18px }
+summary::-webkit-details-marker { display: none }
+summary::after { content: "+"; position: absolute; right: 4px; top: 14px; font: 800 30px/1 var(--display); color: var(--muted) }
+details[open] summary::after { content: "–" }
+details p { padding: 0 0 22px; color: var(--ink-soft); max-width: 62ch }
+
+/* Appel final */
+.cta { background: var(--lime); color: var(--lime-ink); padding-block: 64px }
+.cta .wrap { display: grid; grid-template-columns: 1.1fr .9fr; gap: 32px; align-items: center }
+.cta-text { display: grid; gap: 14px; min-width: 0 }
+.wait { background: #FFFFFF; color: #101511; border-radius: 22px; padding: 22px; display: grid; gap: 12px; min-width: 0 }
+.wait fieldset { border: 0; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; align-items: center }
+.wait legend { font-weight: 600; font-size: 14px; margin-bottom: 6px; width: 100% }
+.wait fieldset label { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 14px; border: 1.5px solid #D3D7CE; border-radius: 999px; font-size: 14.5px; cursor: pointer }
+.wait fieldset label:has(input:checked) { border-color: #101511; background: #F3F4F0; font-weight: 600 }
+.wait .field { font-weight: 600; font-size: 14px }
+.wait .line { display: flex; gap: 8px; flex-wrap: wrap }
+.wait input[type=email] { flex: 1 1 200px; min-width: 0; min-height: 48px; border: 1.5px solid #D3D7CE; border-radius: 14px; padding: 0 14px; font: 400 16px var(--body); color: #101511; background: #FFFFFF }
+.wait input[type=email]:focus { outline: 3px solid #123B2C; outline-offset: 1px }
+.wait .btn { background: #123B2C; border-color: #123B2C; color: #FFFFFF }
+.wait .msg { min-height: 1.2em; font-size: 14px; font-weight: 600 }
+.wait .msg.ok { color: #1C5A40 } .wait .msg.err { color: #B42318 }
+.wait .fine { font-size: 12px; color: #5B625C }
+@media (max-width: 820px) { .cta .wrap { grid-template-columns: 1fr } }
+.cta h2 { color: var(--lime-ink); max-width: 14em }
+.stores { display: flex; flex-wrap: wrap; gap: 10px }
+.store { display: inline-flex; flex-direction: column; justify-content: center; min-height: 54px; padding: 0 20px; border-radius: 14px; background: #101511; color: #fff; font-size: 12px; line-height: 1.2 }
+.store b { font-size: 17px }
+.cta small { display: block; margin-top: 8px; font-size: 13px }
+
+/* Pied */
+footer { padding-block: 40px 56px; color: var(--muted); font-size: 14px }
+footer .wrap { display: grid; gap: 18px }
+footer .links { display: flex; flex-wrap: wrap; gap: 18px }
+footer .legal { font-size: 12.5px; max-width: 80ch }
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero h1, .hero .lead { animation: rise .7s cubic-bezier(.2,.7,.2,1) both }
+  .hero .lead { animation-delay: .08s }
+  @keyframes rise { from { transform: translateY(14px) } to { transform: none } }
+}
+
+/* --- v3 : site en trois pages --- */
+.sports .wrap { padding-block: 12px; font-size: 15px; gap: 8px 22px }
+.sports .lbl { font: 600 11px/1 var(--body); letter-spacing: .16em; color: var(--muted); text-transform: uppercase }
+.hero { padding-block: 44px 56px }
+.hero.home { padding-block: 36px 48px }
+.hero .grid { display: block }
+.hero h1 { max-width: 12em; font-size: clamp(42px, 6.6vw, 88px) }
+.hero.home h1 { font-size: clamp(44px, 7.4vw, 96px) }
+.hero .lead { font-size: 20px; max-width: 34em; margin-top: 16px }
+.choose2 { margin-top: 26px }
+.choose2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 32px; max-width: 720px }
+.choose2 a { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 76px; padding: 0 26px; border-radius: 20px; background: var(--ink); color: var(--paper); text-decoration: none; font: 800 clamp(21px, 2.1vw, 26px)/1 var(--display); text-transform: uppercase; white-space: nowrap; transition: transform .15s }
+.choose2 a:hover { transform: translateY(-2px) }
+.choose2 a svg { width: 26px; height: 26px; flex: none; stroke: var(--lime); fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round }
+@media (max-width: 620px) { .choose2 { grid-template-columns: 1fr } }
+@media (max-width: 400px) { .choose2 a { white-space: normal; padding: 0 20px } }
+.gains { padding-block: 24px 80px }
+.gains .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 28px }
+.perk { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 22px; display: grid; gap: 10px; align-content: start; min-width: 0 }
+.perk > svg { width: 30px; height: 30px; fill: none; stroke: var(--accent-ink); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round }
+.perk h3 { font-size: 22px; line-height: 1 }
+.perk p { color: var(--ink-soft); font-size: 15px }
+.perk .shirt { width: 36px; height: 34px; max-width: none; margin: 0 }
+.perk .mini { display: grid; gap: 4px; margin-top: 4px; padding-top: 10px; border-top: 1px solid var(--line); font-variant-numeric: tabular-nums }
+.perk .mini div { display: flex; justify-content: space-between; gap: 8px; font-size: 14px; color: var(--ink-soft) }
+.perk .mini div b { color: var(--ink) }
+.perk .mini div.t { border-top: 1px solid var(--ink); padding-top: 6px; margin-top: 2px; color: var(--ink); font-weight: 600 }
+.perk .mini div.t b { font: 800 26px/1 var(--display); color: var(--accent-ink) }
+@media (max-width: 980px) { .gains .grid { grid-template-columns: repeat(2, 1fr) } }
+@media (max-width: 520px) { .gains .grid { grid-template-columns: 1fr } }
+.other { margin-top: 28px; font-weight: 600 }
+.other a { color: var(--accent-ink) }
+nav a[aria-current="page"] { color: var(--ink); text-decoration: underline; text-decoration-color: var(--lime); text-decoration-thickness: 3px; text-underline-offset: 6px }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap bar">
+    <a class="mark" href="index.html" aria-label="Quartier, accueil">quartier<i aria-hidden="true"></i></a>
+    <nav aria-label="Pages">
+      <a href="commercants.html">Commerçants</a>
+      <a href="clubs.html" aria-current="page">Clubs</a>
+      <a href="index.html#etapes">Comment ça marche</a>
+      <a href="#faq">Questions</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a class="btn" href="#telecharger">Être prévenu</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap grid">
+      <p class="eyebrow">Pour les clubs</p>
+      <h1 style="margin-top:14px">Financez votre club grâce au quartier.</h1>
+      <p class="lead">Publiez vos offres de partenariat, les commerces d’à côté vous soutiennent. De quoi financer maillots, déplacements et tournois, sans démarchage.</p>
+      <div class="ctas"><a class="btn" href="#telecharger">Inscrire mon club en avant-première</a></div>
+    </div>
+  </section>
+
+  <section class="gains" id="avantages">
+    <div class="wrap">
+      <h2>Ce que ça rapporte au club</h2>
+      <div class="grid">
+          <article class="perk"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z M15 9.5a3.5 3.5 0 1 0 0 5 M8 11h5 M8 13h5"/></svg><h3>De l’argent pour la saison</h3><p>Maillots, déplacements, tournois, matériel : financez le club sans augmenter les cotisations des familles.</p></article>
+          <article class="perk"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v12H8l-4 4z M8 9h8 M8 12h5"/></svg><h3>Les commerçants viennent à vous</h3><p>Publiez vos offres une fois : les commerces du quartier vous trouvent dans l’appli. Fini le porte-à-porte.</p></article>
+          <article class="perk"><svg class="shirt" aria-hidden="true" viewBox="10 26 280 252">
+          <defs>
+            <linearGradient id="fab" x1="0" x2="1" y1="0" y2="0">
+              <stop offset="0" stop-color="#14347A"/><stop offset=".17" stop-color="#2152B0"/><stop offset=".5" stop-color="#2E66CC"/><stop offset=".83" stop-color="#1F4FAA"/><stop offset="1" stop-color="#122F70"/>
+            </linearGradient>
+            <linearGradient id="fabv" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset=".75" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".10"/>
+            </linearGradient>
+            <linearGradient id="slv" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0" stop-color="#2A5EC0"/><stop offset="1" stop-color="#173C86"/>
+            </linearGradient>
+            <linearGradient id="lime" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#D9DEE8"/>
+            </linearGradient>
+            <pattern id="mesh" width="4" height="4" patternUnits="userSpaceOnUse">
+              <circle cx="1" cy="1" r=".55" fill="#000" fill-opacity=".12"/><circle cx="3" cy="3" r=".55" fill="#000" fill-opacity=".09"/>
+            </pattern>
+            <filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="3"/></filter>
+            <filter id="drop" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="7"/></filter>
+            <clipPath id="body"><path d="M112 30 L80 41 L72 112 L70 268 C110 279 190 279 230 268 L228 112 L220 41 L188 30 C180 50 164 59 150 59 C136 59 120 50 112 30 Z"/></clipPath>
+          </defs>
+          <ellipse cx="150" cy="284" rx="96" ry="7" fill="#000" opacity=".18" filter="url(#drop)"/>
+          <!-- manches -->
+          <path d="M80 41 L44 60 C30 74 20 92 13 110 L52 128 L72 112 Z" fill="url(#slv)"/>
+          <path d="M220 41 L256 60 C270 74 280 92 287 110 L248 128 L228 112 Z" fill="url(#slv)" transform="translate(0 0)"/>
+          <path d="M13 110 L52 128 L56 119 L18 101 Z" fill="url(#lime)"/>
+          <path d="M287 110 L248 128 L244 119 L282 101 Z" fill="url(#lime)"/>
+          <path d="M80 41 C70 70 70 92 72 112" fill="none" stroke="#8FB0EA" stroke-opacity=".55" stroke-width="1" stroke-dasharray="2 2.5"/>
+          <path d="M220 41 C230 70 230 92 228 112" fill="none" stroke="#8FB0EA" stroke-opacity=".55" stroke-width="1" stroke-dasharray="2 2.5"/>
+          <!-- corps -->
+          <path d="M112 30 L80 41 L72 112 L70 268 C110 279 190 279 230 268 L228 112 L220 41 L188 30 C180 50 164 59 150 59 C136 59 120 50 112 30 Z" fill="url(#fab)"/>
+          <g clip-path="url(#body)">
+            <rect x="60" y="20" width="180" height="270" fill="url(#mesh)"/>
+            <rect x="60" y="20" width="180" height="270" fill="url(#fabv)"/>
+            <!-- bandes latérales -->
+            <path d="M72 112 L84 108 L82 280 L66 280 Z" fill="#0F2A63"/>
+            <path d="M228 112 L216 108 L218 280 L234 280 Z" fill="#0F2A63"/>
+            <path d="M84 108 L88 108 L86 280 L82 280 Z" fill="#FFFFFF"/>
+            <path d="M216 108 L212 108 L214 280 L218 280 Z" fill="#FFFFFF"/>
+            <!-- plis du tissu -->
+            <g fill="none" stroke="#061638" stroke-linecap="round" filter="url(#soft)">
+              <path d="M98 70 C112 110 104 150 112 196" stroke-width="6" opacity=".13"/>
+              <path d="M204 76 C190 120 198 168 186 214" stroke-width="7" opacity=".12"/>
+              <path d="M120 214 C140 226 168 226 186 236" stroke-width="5" opacity=".10"/>
+              <path d="M150 64 C146 80 154 92 150 104" stroke-width="4" opacity=".08"/>
+            </g>
+            <path d="M74 262 C112 272 188 272 226 262" fill="none" stroke="#8FB0EA" stroke-opacity=".55" stroke-width="1" stroke-dasharray="2 2.5"/>
+          </g>
+          <!-- col -->
+          <path d="M112 30 C120 50 136 59 150 59 C164 59 180 50 188 30 L180 26 C173 44 162 51 150 51 C138 51 127 44 120 26 Z" fill="url(#lime)"/>
+          <path d="M120 26 C127 44 138 51 150 51 C162 51 173 44 180 26" fill="none" stroke="#14347A" stroke-opacity=".35" stroke-width="1"/>
+          <path d="M88 39 L112 30 M212 39 L188 30" stroke="#8FB0EA" stroke-opacity=".55" stroke-width="1" stroke-dasharray="2 2.5"/>
+          <!-- écusson du club (côté cœur) : club inventé « Étoile Sportive du 20e » -->
+          <g transform="translate(180 72)">
+            <path d="M0 0 H32 V18 C32 31 22 38 16 42 C10 38 0 31 0 18 Z" fill="#FFFFFF"/>
+            <path d="M2.5 2.5 H29.5 V18 C29.5 29.5 20.5 35.5 16 39 C11.5 35.5 2.5 29.5 2.5 18 Z" fill="#14347A"/>
+            <path d="M2.5 2.5 H29.5 V10 H2.5 Z" fill="#C8102E"/>
+            <text x="16" y="8.8" text-anchor="middle" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-weight="800" font-size="6.6" textLength="20" lengthAdjust="spacingAndGlyphs" fill="#FFFFFF">E.S. 20</text>
+            <circle cx="16" cy="21" r="7" fill="#FFFFFF"/>
+            <path d="M16 17.2 L19.4 19.7 L18.1 23.7 H13.9 L12.6 19.7 Z" fill="#14347A"/>
+            <path d="M16 14 V17.2 M19.4 19.7 L22.6 18.6 M18.1 23.7 L20.1 26.6 M13.9 23.7 L11.9 26.6 M12.6 19.7 L9.4 18.6" stroke="#14347A" stroke-width=".9"/>
+            <text x="16" y="34.6" text-anchor="middle" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-weight="700" font-size="5.2" letter-spacing=".5" fill="#FFFFFF">1974</text>
+          </g>
+          <path d="M196 64 l1.6 3.2 3.5 .5 -2.5 2.5 .6 3.5 -3.2 -1.7 -3.2 1.7 .6 -3.5 -2.5 -2.5 3.5 -.5 Z" fill="#F2C230"/>
+          <!-- petite marque d'équipementier (inventée) -->
+          <g transform="translate(103 86)" fill="#FFFFFF"><path d="M0 9 L7 0 L10 0 L5 9 Z"/><path d="M6 9 L13 0 L16 0 L11 9 Z"/></g>
+          <!-- sponsor imprimé -->
+          <g opacity=".95">
+            <text x="150" y="160" text-anchor="middle" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-weight="800" font-size="36" textLength="112" lengthAdjust="spacingAndGlyphs" fill="#FFFFFF">PIZZA LINO</text>
+            <rect x="116" y="167" width="68" height="14" rx="2" fill="#C8102E"/>
+            <text x="150" y="178" text-anchor="middle" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-weight="700" font-size="10.5" textLength="54" lengthAdjust="spacingAndGlyphs" fill="#FFFFFF">PARIS 20e</text>
+          </g>
+        </svg><h3>Vos sponsors sur vos maillots</h3><p>Le logo du commerçant sur vos maillots, une banderole, des posts, un stand au grand match : c’est vous qui proposez.</p></article>
+          <article class="perk"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19L19 5 M7 9a2 2 0 1 0 0-4 2 2 0 0 0 0 4z M17 19a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg><h3>Un argument qui convainc</h3><p>Le commerçant récupère 60 % de son don en impôt : 300 € ne lui coûtent que 120 €. Bien plus facile à accepter.</p></article>
+          <article class="perk"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12V4h8l10 10-8 8z M7.5 8.5h.01"/></svg><h3>Vous fixez vos prix</h3><p>Créez vos formules et vos contreparties en quelques minutes, au prix que vous voulez.</p></article>
+          <article class="perk"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z M2 21a7 7 0 0 1 14 0 M16 11l2 2 4-4"/></svg><h3>Vous choisissez vos partenaires</h3><p>Chaque demande attend votre accord et votre signature. Un commerce ne vous convient pas ? Refusez-le.</p></article>
+          <article class="perk"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10l9-6 9 6 M5 10v8 M9 10v8 M15 10v8 M19 10v8 M3 21h18"/></svg><h3>Argent versé, zéro paperasse</h3><p>Chaque preuve photo validée débloque sa part sur le compte du club. Conventions et reçus fiscaux sont faits pour vous.</p></article>
+          <article class="perk"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12v9H4v-9 M2 7h20v5H2z M12 21V7 M12 7c-2-4-6-4-6-1.5S9 7 12 7c3 0 6-.5 6-1.5S14 3 12 7"/></svg><h3>Rien à payer pour commencer</h3><p>Pas d’abonnement : Quartier prend 10 % seulement sur les dons reçus. Par exemple :</p><div class="mini"><div><span>Don reçu</span><b>300 €</b></div><div><span>Commission (10 %)</span><b>− 30 €</b></div><div class="t"><span>Pour le club</span><b>270 €</b></div></div></article>
+      </div>
+      <p class="other">Vous êtes commerçant ? <a href="commercants.html">Voir la page des commerçants</a></p>
+    </div>
+  </section>
+
+  <section class="steps" id="etapes">
+    <div class="wrap">
+      <p class="eyebrow">Comment ça marche</p>
+      <h2 style="margin-top:10px">De la poignée de main au reçu fiscal</h2>
+      <ol>
+        <li><b>Le club publie</b><p>Ses formules, ses prix et ses contreparties : logo maillot, banderole, posts…</p></li>
+        <li><b>Le commerçant signe</b><p>Il choisit une formule et signe la convention. Sa carte est seulement réservée.</p></li>
+        <li><b>Le club accepte</b><p>Il valide le partenaire et signe à son tour. Le don est alors prélevé.</p></li>
+        <li><b>Preuves en photo</b><p>Une photo par contrepartie, vérifiée puis acceptée par le commerçant. Chaque preuve débloque sa part.</p></li>
+        <li><b>Reçu fiscal</b><p>À la fin, le reçu (modèle Cerfa 16216) arrive dans l’appli, prêt pour le comptable.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="faq" id="faq">
+    <div class="wrap">
+      <p class="eyebrow">Questions fréquentes</p>
+      <h2 style="margin-top:10px">Ce qu’on nous demande</h2>
+      <div class="list">
+        <details><summary>Qui peut recevoir des dons ?</summary><p>Les clubs sportifs amateurs constitués en association d’intérêt général : sans but lucratif, ouverts à tous et dirigés par des bénévoles. C’est le cas de la plupart des clubs de quartier. Le club le certifie dans son profil.</p></details>
+        <details><summary>Le club peut-il refuser un partenaire ?</summary><p>Oui. Chaque demande arrive au club, qui l’accepte en signant ou la refuse, par exemple si l’activité du commerce ne lui convient pas. Les secteurs alcool, tabac et paris sont exclus d’office.</p></details>
+        <details><summary>Combien coûte Quartier ?</summary><p>Rien pour les commerçants. Le club reverse une commission de 10 % sur chaque don reçu, 5 % lors d’un renouvellement la saison suivante. Pas d’abonnement : sans don, rien à payer.</p></details>
+        <details><summary>Où l’argent est-il conservé ?</summary><p>Les paiements passent par Stripe, prestataire de paiement agréé. Quartier ne voit ni ne stocke aucun numéro de carte.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="wrap">
+      <div class="box">
+        <div>
+          <h2>Une question ?</h2>
+          <p>Club ou commerçant, écrivez-nous : on vous répond rapidement.</p>
+        </div>
+        <a class="mail" href="mailto:contact@quartier-app.fr">contact@quartier-app.fr</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta" id="telecharger">
+    <div class="wrap">
+      <div class="cta-text">
+        <h2>Inscrivez votre club en avant-première</h2>
+        <small>L’application arrive bientôt sur iPhone et Android. Laissez votre e-mail : on vous prévient le jour du lancement.</small>
+        <div class="stores" aria-label="Disponibilité">
+          <span class="store">Bientôt sur<b>l’App Store</b></span>
+          <span class="store">Bientôt sur<b>Google Play</b></span>
+        </div>
+      </div>
+      <form class="wait" id="wait-form" novalidate>
+        <input type="hidden" name="kind" value="club">
+        <label class="field" for="wait-email">Votre e-mail</label>
+        <div class="line">
+          <input id="wait-email" type="email" name="email" autocomplete="email" placeholder="vous@exemple.fr" required>
+          <button class="btn" type="submit" id="wait-send">Me prévenir</button>
+        </div>
+        <p class="msg" id="wait-msg" role="status" aria-live="polite"></p>
+        <p class="fine">Votre e-mail sert uniquement à vous prévenir du lancement. Aucune publicité, aucune revente.</p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="mark" href="#top" style="font-size:24px">quartier<i aria-hidden="true"></i></a>
+    <div class="links">
+      <a href="cgu.html">Conditions générales</a>
+      <a href="confidentialite.html">Confidentialité</a>
+      <a href="mentions-legales.html">Mentions légales</a>
+      <a href="mailto:contact@quartier-app.fr">contact@quartier-app.fr</a>
+    </div>
+    <p class="legal">Quartier est édité par Gaspard Lobmeyr, entrepreneur individuel (micro-entreprise), SIRET en cours d’attribution, 11 bis boulevard de Beauséjour, 75016 Paris. Les informations fiscales de cette page sont données à titre indicatif et ne remplacent pas l’avis d’un professionnel.</p>
+  </div>
+</footer>
+
+<script>
+(() => {
+  // Liste d'attente : enregistrée dans la base Quartier (table « waitlist », inscription seulement).
+  const SUPABASE = 'https://fiuvymrxvsyibvinzscm.supabase.co';
+  const KEY = 'sb_publishable_2QUlWqtncqYEL1MwpMliyA_Yi4ghl43';
+  const form = document.getElementById('wait-form');
+  const msg = document.getElementById('wait-msg');
+  const email = document.getElementById('wait-email');
+  const send = document.getElementById('wait-send');
+  const kindOf = () => form.querySelector('input[name=kind]:checked, input[type=hidden][name=kind]')?.value || 'shop';
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const value = email.value.trim();
+    const kind = kindOf();
+    msg.className = 'msg';
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(value)) { msg.textContent = 'Vérifiez votre adresse e-mail (ex. vous@exemple.fr).'; msg.classList.add('err'); email.focus(); return; }
+    send.disabled = true; send.textContent = 'Envoi…';
+    try {
+      const res = await fetch(SUPABASE + '/rest/v1/waitlist', { method: 'POST', headers: { apikey: KEY, Authorization: 'Bearer ' + KEY, 'Content-Type': 'application/json', Prefer: 'return=minimal' }, body: JSON.stringify({ email: value, kind }) });
+      // Prévient Quartier par e-mail (sans bloquer le visiteur si ça échoue).
+      if (res.ok) fetch(SUPABASE + '/functions/v1/waitlist-notify', { method: 'POST', headers: { apikey: KEY, Authorization: 'Bearer ' + KEY, 'Content-Type': 'application/json' }, body: JSON.stringify({ email: value, kind }), keepalive: true }).catch(() => {});
+      if (res.ok || res.status === 409) { msg.textContent = 'C’est noté ! On vous écrit le jour du lancement.'; msg.classList.add('ok'); email.value = ''; }
+      else throw new Error(String(res.status));
+    } catch { msg.textContent = 'L’envoi n’a pas marché. Réessayez dans un instant.'; msg.classList.add('err'); }
+    send.disabled = false; send.textContent = 'Me prévenir';
+  });
+})();
+</script>
+</body>
+</html>
