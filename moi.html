@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Mes visites · Quartier</title>
+<style>
+  :root{--bg:#0B1424;--card:#16243D;--line:#2C4064;--ink:#F2F5FA;--muted:#93A2BB;--blue:#5B9BFF;--ok:#7BE0A8;--warn:#F6B86B}
+  *{box-sizing:border-box;margin:0}
+  body{background:var(--bg);color:var(--ink);font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 16px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:28px 22px;max-width:420px;width:100%;text-align:center}
+  .logo{font-weight:800;font-size:26px;letter-spacing:.3px;margin-bottom:18px}
+  .logo i{display:inline-block;width:9px;height:9px;background:var(--blue);margin-left:3px}
+  .state{font-size:20px;font-weight:700;margin:6px 0 8px}
+  .on{color:var(--ok)} .off{color:var(--warn)}
+  p{color:var(--muted);font-size:14.5px}
+  button{margin-top:22px;width:100%;min-height:48px;border:0;border-radius:14px;background:var(--blue);color:#0B1424;font:700 16px/1 inherit;cursor:pointer}
+  button.ghost{background:transparent;color:var(--muted);border:1px solid var(--line);margin-top:10px;font-weight:600}
+  a{color:#8DB8FF}
+</style>
+</head>
+<body>
+<main class="card">
+  <div class="logo">quartier<i></i></div>
+  <div id="state" class="state"></div>
+  <p id="info"></p>
+  <button id="toggle" type="button"></button>
+  <p style="margin-top:18px;font-size:13px">À faire une fois sur chaque téléphone et navigateur.<br><a href="/">Retour au site</a></p>
+</main>
+<script>
+  var KEY = 'skipgc';
+  function get(){ try { return localStorage.getItem(KEY) === 't'; } catch(e){ return null; } }
+  function set(v){ try { v ? localStorage.setItem(KEY,'t') : localStorage.removeItem(KEY); } catch(e){} }
+  function render(){
+    var ignored = get(), s = document.getElementById('state'), i = document.getElementById('info'), b = document.getElementById('toggle');
+    if (ignored === null){ s.textContent = 'Impossible sur ce navigateur'; s.className='state off'; i.textContent = 'Ce navigateur bloque le stockage (navigation privée ?). Ouvrez cette page dans un navigateur normal.'; b.style.display='none'; return; }
+    if (ignored){ s.textContent = '✓ Vos visites ne sont plus comptées'; s.className='state on'; i.textContent = 'Sur ce navigateur, vos passages sur quartier-app.fr n’apparaissent plus dans les statistiques.'; b.textContent = 'Recompter mes visites'; b.className='ghost'; }
+    else { s.textContent = 'Vos visites sont comptées'; s.className='state off'; i.textContent = 'Appuyez sur le bouton pour que vos propres passages ne faussent plus les statistiques du site.'; b.textContent = 'Ne plus compter mes visites'; b.className=''; }
+  }
+  // Première ouverture : on désactive directement le comptage.
+  if (get() === false) set(true);
+  document.getElementById('toggle').onclick = function(){ set(!get()); render(); };
+  render();
+</script>
+</body>
+</html>
