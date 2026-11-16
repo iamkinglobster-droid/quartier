@@ -628,10 +628,34 @@ dialog.studio::backdrop { background: rgba(5,10,7,.72); -webkit-backdrop-filter:
       const im = new Image();
       im.onload = () => {
         const sc = Math.min(1, 600 / Math.max(im.width, im.height));
-        const w = Math.max(1, Math.round(im.width * sc)), h = Math.max(1, Math.round(im.height * sc)), N = w * h;
+        const W0 = Math.max(1, Math.round(im.width * sc)), H0 = Math.max(1, Math.round(im.height * sc));
+        const c0 = document.createElement('canvas'); c0.width = W0; c0.height = H0;
+        const x0c = c0.getContext('2d'); x0c.drawImage(im, 0, 0, W0, H0);
+        const d0 = x0c.getImageData(0, 0, W0, H0).data;
+        // Marges unies (bandes de capture d'écran, cadre) : on les coupe d'abord.
+        const flat = (i0, step, n) => { let r = 0, g = 0, b = 0, a = 0;
+          for (let t = 0; t < n; t++) { const i = (i0 + t * step) * 4; r += d0[i]; g += d0[i + 1]; b += d0[i + 2]; a += d0[i + 3]; }
+          r /= n; g /= n; b /= n; a /= n; if (a < 250) return false;
+          let off = 0; for (let t = 0; t < n; t++) { const i = (i0 + t * step) * 4; if (Math.hypot(d0[i] - r, d0[i + 1] - g, d0[i + 2] - b) > 14) off++; } return off <= n * 0.03; };
+        let t0 = 0, b0 = H0 - 1, l0 = 0, r0 = W0 - 1;
+        while (t0 < b0 - 8 && flat(t0 * W0 + l0, 1, r0 - l0 + 1)) t0++;
+        while (b0 > t0 + 8 && flat(b0 * W0 + l0, 1, r0 - l0 + 1)) b0--;
+        while (l0 < r0 - 8 && flat(t0 * W0 + l0, W0, b0 - t0 + 1)) l0++;
+        while (r0 > l0 + 8 && flat(t0 * W0 + r0, W0, b0 - t0 + 1)) r0--;
+        // On recolle 2 px de « fond » tout autour, dans la couleur la plus fréquente des nouveaux bords,
+        // pour que le détourage parte bien du fond et pas d'une bande de capture d'écran.
+        const cw0 = r0 - l0 + 1, ch0 = b0 - t0 + 1, M = 2;
+        const w = cw0 + 2 * M, h = ch0 + 2 * M, N = w * h;
         const c = document.createElement('canvas'); c.width = w; c.height = h;
-        const x = c.getContext('2d'); x.drawImage(im, 0, 0, w, h);
+        const x = c.getContext('2d');
+        { const cnt = {}; let best = null, bn = 0;
+          const vote = (X, Y) => { const i = (Y * W0 + X) * 4; const key = [d0[i] >> 3, d0[i + 1] >> 3, d0[i + 2] >> 3, d0[i + 3] >> 6].join();
+            cnt[key] = (cnt[key] || 0) + 1; if (cnt[key] > bn) { bn = cnt[key]; best = [d0[i], d0[i + 1], d0[i + 2], d0[i + 3]]; } };
+          for (let X = l0; X <= r0; X++) { vote(X, t0); vote(X, b0); } for (let Y = t0; Y <= b0; Y++) { vote(l0, Y); vote(r0, Y); }
+          x.fillStyle = `rgba(${best[0]},${best[1]},${best[2]},${best[3] / 255})`; x.fillRect(0, 0, w, h); x.clearRect(M, M, cw0, ch0); }
+        x.drawImage(c0, l0, t0, cw0, ch0, M, M, cw0, ch0);
         const d = x.getImageData(0, 0, w, h), p = d.data;
+        const a0 = new Uint8Array(N); for (let k = 0; k < N; k++) a0[k] = p[k * 4 + 3];
         const dist = (a, b) => Math.hypot(p[a] - p[b], p[a + 1] - p[b + 1], p[a + 2] - p[b + 2]);
         let border = 0, clear = 0;
         for (let k = 0; k < N; k++) { const X = k % w, Y = (k / w) | 0; if (X && Y && X < w - 1 && Y < h - 1) continue; border++; if (p[k * 4 + 3] < 128) clear++; }
@@ -653,9 +677,27 @@ dialog.studio::backdrop { background: rgba(5,10,7,.72); -webkit-backdrop-filter:
               if (k >= w && !out[k - w] && dist((k - w) * 4, k * 4) < T) { out[k - w] = 1; q[qt++] = k - w; }
               if (k < N - w && !out[k + w] && dist((k + w) * 4, k * 4) < T) { out[k + w] = 1; q[qt++] = k + w; } }
             let sr = 0; for (let k = 0; k < N; k++) if (out[k] && strong[k]) sr++; return sr; };
-          const base = flood(9, gone), tmp = new Uint8Array(N);
-          let T = 9;
-          for (const t of [26, 20, 14]) { const sr = flood(t, tmp); if (sr <= base * 1.5 + N * 0.002) { gone.set(tmp); T = t; break; } }
+          // 1) Référence prudente : on ne retire que les couleurs quasi identiques à celles des bords
+          //    (un logo sombre sur fond noir garde ainsi tout son intérieur).
+          const pal = [];
+          for (let k = 0; k < N; k++) { const X = k % w, Y = (k / w) | 0; if (X && Y && X < w - 1 && Y < h - 1) continue;
+            const i = k * 4; if (pal.length < 24 && !pal.some((c) => Math.hypot(p[i] - c[0], p[i + 1] - c[1], p[i + 2] - c[2]) < 6)) pal.push([p[i], p[i + 1], p[i + 2]]); }
+          const nearPal = (k) => { const i = k * 4; return pal.some((c) => Math.hypot(p[i] - c[0], p[i + 1] - c[1], p[i + 2] - c[2]) < 10); };
+          { gone.fill(0); let qh = 0, qt = 0;
+            for (let k = 0; k < N; k++) { const X = k % w, Y = (k / w) | 0; if (!X || !Y || X === w - 1 || Y === h - 1) { gone[k] = 1; q[qt++] = k; } }
+            while (qh < qt) { const k = q[qh++], X = k % w;
+              for (const j of [X > 0 ? k - 1 : -1, X < w - 1 ? k + 1 : -1, k >= w ? k - w : -1, k < N - w ? k + w : -1])
+                if (j >= 0 && !gone[j] && nearPal(j)) { gone[j] = 1; q[qt++] = j; } } }
+          // 2) On essaie d'aller plus loin en suivant les dégradés (halo, rayures). On accepte seulement si ce qu'on
+          //    retire en plus est lisse (un dégradé) et pas du dessin (détails, lettres, textures).
+          const tex = new Uint8Array(N);
+          for (let k = 0; k < N; k++) { const X = k % w; let m = 0;
+            if (X < w - 1) m = Math.max(m, dist(k * 4, (k + 1) * 4)); if (k < N - w) m = Math.max(m, dist(k * 4, (k + w) * 4));
+            if (m > 14) tex[k] = 1; }
+          const tmp = new Uint8Array(N);
+          for (const t of [26, 18, 12]) { flood(t, tmp); let ex = 0, tx = 0;
+            for (let k = 0; k < N; k++) if (tmp[k] && !gone[k]) { ex++; if (tex[k]) tx++; }
+            if (ex < N * 0.01 || tx / ex < 0.1) { for (let k = 0; k < N; k++) if (tmp[k]) gone[k] = 1; break; } }
           // Fond uni : on vide aussi l'intérieur des lettres (O, R, A…) qui a exactement la couleur du fond.
           let br = 0, bg = 0, bb = 0, bn = 0;
           for (let k = 0; k < N; k++) { const X = k % w, Y = (k / w) | 0; if (X && Y && X < w - 1 && Y < h - 1) continue; const i = k * 4; br += p[i]; bg += p[i + 1]; bb += p[i + 2]; bn++; }
@@ -681,8 +723,8 @@ dialog.studio::backdrop { background: rgba(5,10,7,.72); -webkit-backdrop-filter:
           for (let k = 0; k < N; k++) if (p[k * 4 + 3] >= 25) { dd[k] = 0; qq[qt++] = k; }
           while (qh < qt) { const k = qq[qh++], X = k % w; if (dd[k] >= R) continue;
             const nb = [X > 0 ? k - 1 : -1, X < w - 1 ? k + 1 : -1, k >= w ? k - w : -1, k < N - w ? k + w : -1];
-            for (const j of nb) if (j >= 0 && dd[j] < 0) { dd[j] = dd[k] + 1; qq[qt++] = j; const i = j * 4; lum += p[i] * .3 + p[i + 1] * .59 + p[i + 2] * .11; nl++; } }
-          if (nl && lum / nl < 70) for (let k = 0; k < N; k++) if (dd[k] > 0) p[k * 4 + 3] = dd[k] === R ? 140 : 255; }
+            for (const j of nb) if (j >= 0 && dd[j] < 0) { dd[j] = dd[k] + 1; qq[qt++] = j; if (a0[j] >= 128) { const i = j * 4; lum += p[i] * .3 + p[i + 1] * .59 + p[i + 2] * .11; nl++; } } }
+          if (nl > 20 && lum / nl < 70) for (let k = 0; k < N; k++) if (dd[k] > 0 && a0[k] >= 128) p[k * 4 + 3] = dd[k] === R ? 140 : 255; }
         // Bords adoucis : un pixel gardé qui touche le fond devient semi-transparent.
         const a2 = new Uint8ClampedArray(N);
         for (let k = 0; k < N; k++) { a2[k] = p[k * 4 + 3]; }
