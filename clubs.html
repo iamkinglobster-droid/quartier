@@ -457,15 +457,14 @@ dialog.studio::backdrop { background: rgba(5,10,7,.72); -webkit-backdrop-filter:
           <g transform="translate(103 86)" fill="#FFFFFF"><path d="M0 9 L7 0 L10 0 L5 9 Z"/><path d="M6 9 L13 0 L16 0 L11 9 Z"/></g>
           <!-- sponsor imprimé -->
           <g opacity=".95">
-            <text data-name x="150" y="160" text-anchor="middle" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-weight="800" font-size="36" textLength="112" lengthAdjust="spacingAndGlyphs" fill="#FFFFFF">PIZZA LINO</text>
-            <rect data-tag x="116" y="167" width="68" height="14" rx="2" fill="#C8102E"/>
-            <text data-city x="150" y="178" text-anchor="middle" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-weight="700" font-size="10.5" textLength="54" lengthAdjust="spacingAndGlyphs" fill="#FFFFFF">PARIS 20e</text>
+            <text data-top x="150" y="131" text-anchor="middle" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-weight="700" font-size="15" letter-spacing="2.5" fill="#FFFFFF" opacity=".9">PIZZERIA</text>
+            <text data-name x="150" y="170" text-anchor="middle" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-weight="800" font-size="42" textLength="96" lengthAdjust="spacingAndGlyphs" fill="#FFFFFF">LINO</text>
           </g>
         </svg>
       <div class="ctl">
         <h2 id="studio-title">Votre commerce sur le maillot</h2>
-        <label class="f">Nom de votre commerce<input type="text" id="st-name" maxlength="16" placeholder="ex. Boulangerie Paul" autocomplete="organization"></label>
-        <label class="f">Ville ou quartier<input type="text" id="st-city" maxlength="14" placeholder="ex. Lyon 7e"></label>
+        <label class="f">En haut, en petit<input type="text" id="st-top" maxlength="18" placeholder="ex. Boulangerie" autocomplete="off"></label>
+        <label class="f">En dessous, en grand<input type="text" id="st-name" maxlength="14" placeholder="ex. Paul" autocomplete="organization"></label>
         <fieldset class="sw"><legend>Couleur du maillot</legend><label style="background:#2E66CC" title="Bleu"><input type="radio" name="kit" value="bleu" checked aria-label="Maillot bleu"></label><label style="background:#CC2E3D" title="Rouge"><input type="radio" name="kit" value="rouge" aria-label="Maillot rouge"></label><label style="background:#1E8A4E" title="Vert"><input type="radio" name="kit" value="vert" aria-label="Maillot vert"></label><label style="background:#2A2F32" title="Noir"><input type="radio" name="kit" value="noir" aria-label="Maillot noir"></label><label style="background:#F2C94C" title="Jaune"><input type="radio" name="kit" value="jaune" aria-label="Maillot jaune"></label><label style="background:#F2F4F7" title="Blanc"><input type="radio" name="kit" value="blanc" aria-label="Maillot blanc"></label></fieldset>
         <a class="btn go" href="#telecharger">Inscrire mon club en avant-première</a>
         <p class="fine2">Simple aperçu : sur le vrai maillot, c’est votre logo que le club imprime.</p>
@@ -588,7 +587,7 @@ dialog.studio::backdrop { background: rgba(5,10,7,.72); -webkit-backdrop-filter:
       blanc: [['#BFC5CE','#E2E6EC','#FAFBFC','#DFE3E9','#B9BFC9'], ['#F2F4F7','#C3C9D2'], '#1F3A7A', '#14347A'],
     };
     const q = (sel) => dlg.querySelector(sel);
-    const nameEl = q('[data-name]'), cityEl = q('[data-city]'), tag = q('[data-tag]');
+    const nameEl = q('[data-name]'), topEl = q('[data-top]');
     const fit = (el, txt, base, maxW, min) => {
       const n = Math.max(txt.length, 1);
       const fs = Math.max(min, Math.min(base, (maxW / (n * 0.5))));
@@ -597,16 +596,18 @@ dialog.studio::backdrop { background: rgba(5,10,7,.72); -webkit-backdrop-filter:
       return Math.min(maxW, n * fs * 0.5);
     };
     const draw = () => {
-      const name = (document.getElementById('st-name').value.trim() || 'Pizza Lino').toUpperCase();
-      const city = (document.getElementById('st-city').value.trim() || 'Paris 20e').toUpperCase();
-      fit(nameEl, name, 36, 124, 16);
-      const w = fit(cityEl, city, 10.5, 70, 7);
-      tag.setAttribute('width', (w + 14).toFixed(1)); tag.setAttribute('x', (150 - (w + 14) / 2).toFixed(1));
+      let top = document.getElementById('st-top').value.trim(), name = document.getElementById('st-name').value.trim();
+      if (!top && !name) { top = 'Pizzeria'; name = 'Lino'; }
+      top = top.toUpperCase(); name = name.toUpperCase();
+      topEl.style.display = top ? '' : 'none';
+      if (top) { const ls = top.length > 8 ? 1 : 2.5; topEl.setAttribute('letter-spacing', ls); fit(topEl, top, 15, 96, 8); topEl.removeAttribute('textLength'); if (top.length * (7.5 + ls) > 96) topEl.setAttribute('textLength', '96'); }
+      nameEl.setAttribute('y', top ? '170' : '162');
+      fit(nameEl, name || ' ', 42, 104, 16);
       const k = K[dlg.querySelector('input[name=kit]:checked').value];
       dlg.querySelectorAll('[data-fab] stop').forEach((st, i) => st.setAttribute('stop-color', k[0][i]));
       dlg.querySelectorAll('[data-slv] stop').forEach((st, i) => st.setAttribute('stop-color', k[1][i]));
       dlg.querySelectorAll('[data-band]').forEach((b) => b.setAttribute('fill', k[2]));
-      nameEl.setAttribute('fill', k[3]);
+      nameEl.setAttribute('fill', k[3]); topEl.setAttribute('fill', k[3]);
     };
     dlg.addEventListener('input', draw);
     const open = () => { draw(); dlg.showModal(); setTimeout(() => document.getElementById('st-name').focus(), 50); };
