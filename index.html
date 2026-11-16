@@ -354,6 +354,11 @@ dialog.studio::backdrop { background: rgba(5,10,7,.72); -webkit-backdrop-filter:
 .studio .x { position: absolute; top: 12px; right: 12px; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line); background: var(--paper); color: var(--ink); font-size: 22px; cursor: pointer }
 .studio .go { justify-self: start; background: var(--lime); border-color: var(--lime); color: var(--lime-ink) }
 .studio .fine2 { color: var(--muted); font-size: 12.5px }
+.studio .logo-up { display: flex; align-items: center; gap: 10px; flex-wrap: wrap }
+.studio .logo-up label { display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border-radius: 14px; border: 1.5px dashed var(--line); background: var(--paper); color: var(--ink); font-weight: 600; font-size: 14px; cursor: pointer }
+.studio .logo-up label:focus-within { outline: 3px solid var(--lime); outline-offset: 1px }
+.studio .logo-up input { position: absolute; width: 1px; height: 1px; opacity: 0 }
+.studio .logo-up button { min-height: 44px; border: 0; background: none; color: var(--muted); text-decoration: underline; font: 500 13px var(--body); cursor: pointer }
 @media (max-width: 700px) { .studio .in { grid-template-columns: 1fr; padding: 22px; gap: 16px } .studio .shirt { max-width: 240px } }
 </style>
 </head>
@@ -573,12 +578,14 @@ dialog.studio::backdrop { background: rgba(5,10,7,.72); -webkit-backdrop-filter:
           <g opacity=".95">
             <text data-top x="150" y="131" text-anchor="middle" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-weight="700" font-size="15" letter-spacing="2.5" fill="#FFFFFF" opacity=".9">PIZZERIA</text>
             <text data-name x="150" y="170" text-anchor="middle" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-weight="800" font-size="42" textLength="96" lengthAdjust="spacingAndGlyphs" fill="#FFFFFF">LINO</text>
+            <image data-logo x="94" y="100" width="112" height="90" preserveAspectRatio="xMidYMid meet" style="display:none"/>
           </g>
         </svg>
       <div class="ctl">
         <h2 id="studio-title">Votre commerce sur le maillot</h2>
         <label class="f">En haut, en petit<input type="text" id="st-top" maxlength="18" placeholder="ex. Boulangerie" autocomplete="off"></label>
         <label class="f">En dessous, en grand<input type="text" id="st-name" maxlength="14" placeholder="ex. Paul" autocomplete="organization"></label>
+        <div class="logo-up"><label>📷 Ou mettez votre logo<input type="file" id="st-logo" accept="image/*"></label><button type="button" id="st-logo-x" hidden>Retirer le logo</button></div>
         <fieldset class="sw"><legend>Couleur du maillot</legend><label style="background:#2E66CC" title="Bleu"><input type="radio" name="kit" value="bleu" checked aria-label="Maillot bleu"></label><label style="background:#CC2E3D" title="Rouge"><input type="radio" name="kit" value="rouge" aria-label="Maillot rouge"></label><label style="background:#1E8A4E" title="Vert"><input type="radio" name="kit" value="vert" aria-label="Maillot vert"></label><label style="background:#2A2F32" title="Noir"><input type="radio" name="kit" value="noir" aria-label="Maillot noir"></label><label style="background:#F2C94C" title="Jaune"><input type="radio" name="kit" value="jaune" aria-label="Maillot jaune"></label><label style="background:#F2F4F7" title="Blanc"><input type="radio" name="kit" value="blanc" aria-label="Maillot blanc"></label></fieldset>
         <a class="btn go" href="commercants.html">Je veux mon logo sur un maillot</a>
         <p class="fine2">Simple aperçu : sur le vrai maillot, c’est votre logo que le club imprime.</p>
@@ -661,7 +668,7 @@ dialog.studio::backdrop { background: rgba(5,10,7,.72); -webkit-backdrop-filter:
       blanc: [['#BFC5CE','#E2E6EC','#FAFBFC','#DFE3E9','#B9BFC9'], ['#F2F4F7','#C3C9D2'], '#1F3A7A', '#14347A'],
     };
     const q = (sel) => dlg.querySelector(sel);
-    const nameEl = q('[data-name]'), topEl = q('[data-top]');
+    const nameEl = q('[data-name]'), topEl = q('[data-top]'), logoEl = q('[data-logo]');
     const fit = (el, txt, base, maxW, min) => {
       const n = Math.max(txt.length, 1);
       const fs = Math.max(min, Math.min(base, (maxW / (n * 0.5))));
@@ -677,6 +684,10 @@ dialog.studio::backdrop { background: rgba(5,10,7,.72); -webkit-backdrop-filter:
       if (top) { const ls = top.length > 8 ? 1 : 2.5; topEl.setAttribute('letter-spacing', ls); fit(topEl, top, 15, 96, 8); topEl.removeAttribute('textLength'); if (top.length * (7.5 + ls) > 96) topEl.setAttribute('textLength', '96'); }
       nameEl.setAttribute('y', top ? '170' : '162');
       fit(nameEl, name || ' ', 42, 104, 16);
+      const hasLogo = !!logoEl.getAttribute('href');
+      logoEl.style.display = hasLogo ? '' : 'none';
+      nameEl.style.display = hasLogo ? 'none' : '';
+      if (hasLogo) topEl.style.display = 'none';
       const k = K[dlg.querySelector('input[name=kit]:checked').value];
       dlg.querySelectorAll('[data-fab] stop').forEach((st, i) => st.setAttribute('stop-color', k[0][i]));
       dlg.querySelectorAll('[data-slv] stop').forEach((st, i) => st.setAttribute('stop-color', k[1][i]));
@@ -684,6 +695,14 @@ dialog.studio::backdrop { background: rgba(5,10,7,.72); -webkit-backdrop-filter:
       nameEl.setAttribute('fill', k[3]); topEl.setAttribute('fill', k[3]);
     };
     dlg.addEventListener('input', draw);
+    const logoIn = document.getElementById('st-logo'), logoX = document.getElementById('st-logo-x');
+    logoIn.addEventListener('change', () => {
+      const f = logoIn.files && logoIn.files[0]; if (!f) return;
+      const r = new FileReader();
+      r.onload = () => { logoEl.setAttribute('href', r.result); logoX.hidden = false; draw(); };
+      r.readAsDataURL(f);
+    });
+    logoX.addEventListener('click', () => { logoEl.removeAttribute('href'); logoIn.value = ''; logoX.hidden = true; draw(); });
     const open = () => { draw(); dlg.showModal(); setTimeout(() => document.getElementById('st-name').focus(), 50); };
     document.querySelectorAll('[data-open-studio]').forEach((b) => b.addEventListener('click', open));
     q('[data-close]').addEventListener('click', () => dlg.close());
