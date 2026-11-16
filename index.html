@@ -696,47 +696,87 @@ dialog.studio::backdrop { background: rgba(5,10,7,.72); -webkit-backdrop-filter:
       if (logo) logoEl.setAttribute('href', logo.mono ? logo.tint(k[3]) : logo.url);
     };
     dlg.addEventListener('input', draw);
-    // Logo : on enlève le fond (couleur des bords), on recadre au plus juste,
-    // et un logo noir/blanc/gris prend la couleur d'impression du maillot.
+    // Logo : on détoure (fond retiré, même en dégradé), on recadre, et un logo d'une seule teinte
+    // prend la couleur d'impression du maillot.
     const cleanLogo = (src) => new Promise((ok, ko) => {
       const im = new Image();
       im.onload = () => {
-        const sc = Math.min(1, 700 / Math.max(im.width, im.height));
-        const w = Math.max(1, Math.round(im.width * sc)), h = Math.max(1, Math.round(im.height * sc));
+        const sc = Math.min(1, 600 / Math.max(im.width, im.height));
+        const w = Math.max(1, Math.round(im.width * sc)), h = Math.max(1, Math.round(im.height * sc)), N = w * h;
         const c = document.createElement('canvas'); c.width = w; c.height = h;
         const x = c.getContext('2d'); x.drawImage(im, 0, 0, w, h);
         const d = x.getImageData(0, 0, w, h), p = d.data;
-        let n = 0, tr = 0, r = 0, g = 0, b = 0;
-        const take = (i) => { n++; if (p[i + 3] < 128) { tr++; return; } r += p[i]; g += p[i + 1]; b += p[i + 2]; };
-        for (let X = 0; X < w; X++) { take(X * 4); take(((h - 1) * w + X) * 4); }
-        for (let Y = 0; Y < h; Y++) { take(Y * w * 4); take((Y * w + w - 1) * 4); }
-        if (tr < n / 2) {
-          const m = n - tr; r /= m; g /= m; b /= m;
-          // fond relié au bord (remplissage), + trous de la même couleur exacte (intérieur des lettres)
-          const D = new Float32Array(w * h), gone = new Uint8Array(w * h), st = [];
-          for (let k = 0; k < w * h; k++) { const i = k * 4; D[k] = p[i + 3] < 128 ? 0 : Math.hypot(p[i] - r, p[i + 1] - g, p[i + 2] - b); }
-          for (let X = 0; X < w; X++) st.push(X, (h - 1) * w + X);
-          for (let Y = 0; Y < h; Y++) st.push(Y * w, Y * w + w - 1);
-          while (st.length) { const k = st.pop(); if (gone[k] || D[k] >= 45) continue; gone[k] = 1; const X = k % w;
-            if (X > 0) st.push(k - 1); if (X < w - 1) st.push(k + 1); if (k >= w) st.push(k - w); if (k < w * (h - 1)) st.push(k + w); }
-          for (let k = 0; k < w * h; k++) {
-            const i = k * 4;
-            if (gone[k] || D[k] < 22) { p[i + 3] = 0; continue; }
-            const X = k % w, near = (X > 0 && gone[k - 1]) || (X < w - 1 && gone[k + 1]) || (k >= w && gone[k - w]) || (k < w * (h - 1) && gone[k + w]);
-            if (near && D[k] < 95) p[i + 3] = Math.round(p[i + 3] * Math.max(0, D[k] - 22) / 73);
-          }
-          x.putImageData(d, 0, 0);
+        const dist = (a, b) => Math.hypot(p[a] - p[b], p[a + 1] - p[b + 1], p[a + 2] - p[b + 2]);
+        let border = 0, clear = 0;
+        for (let k = 0; k < N; k++) { const X = k % w, Y = (k / w) | 0; if (X && Y && X < w - 1 && Y < h - 1) continue; border++; if (p[k * 4 + 3] < 128) clear++; }
+        const gone = new Uint8Array(N);
+        if (clear < border / 2) {
+          // Fond : on part des bords et on avance tant que la couleur change doucement (dégradés, rayures, halo).
+          // On essaie plusieurs seuils : le plus large qui n'arrache pas de détails nets (lettres, contours)
+          // gagne. Fond en dégradé → seuil large ; logo sombre sur fond noir → seuil serré.
+          const strong = new Uint8Array(N);
+          for (let k = 0; k < N; k++) { const X = k % w; let m = 0;
+            if (X < w - 1) m = Math.max(m, dist(k * 4, (k + 1) * 4)); if (k < N - w) m = Math.max(m, dist(k * 4, (k + w) * 4));
+            if (m > 60) strong[k] = 1; }
+          const q = new Int32Array(N);
+          const flood = (T, out) => { out.fill(0); let qh = 0, qt = 0;
+            for (let k = 0; k < N; k++) { const X = k % w, Y = (k / w) | 0; if (!X || !Y || X === w - 1 || Y === h - 1) { out[k] = 1; q[qt++] = k; } }
+            while (qh < qt) { const k = q[qh++], X = k % w;
+              if (X > 0 && !out[k - 1] && dist((k - 1) * 4, k * 4) < T) { out[k - 1] = 1; q[qt++] = k - 1; }
+              if (X < w - 1 && !out[k + 1] && dist((k + 1) * 4, k * 4) < T) { out[k + 1] = 1; q[qt++] = k + 1; }
+              if (k >= w && !out[k - w] && dist((k - w) * 4, k * 4) < T) { out[k - w] = 1; q[qt++] = k - w; }
+              if (k < N - w && !out[k + w] && dist((k + w) * 4, k * 4) < T) { out[k + w] = 1; q[qt++] = k + w; } }
+            let sr = 0; for (let k = 0; k < N; k++) if (out[k] && strong[k]) sr++; return sr; };
+          const base = flood(9, gone), tmp = new Uint8Array(N);
+          let T = 9;
+          for (const t of [26, 20, 14]) { const sr = flood(t, tmp); if (sr <= base * 1.5 + N * 0.002) { gone.set(tmp); T = t; break; } }
+          // Fond uni : on vide aussi l'intérieur des lettres (O, R, A…) qui a exactement la couleur du fond.
+          let br = 0, bg = 0, bb = 0, bn = 0;
+          for (let k = 0; k < N; k++) { const X = k % w, Y = (k / w) | 0; if (X && Y && X < w - 1 && Y < h - 1) continue; const i = k * 4; br += p[i]; bg += p[i + 1]; bb += p[i + 2]; bn++; }
+          br /= bn; bg /= bn; bb /= bn; let bv = 0;
+          for (let k = 0; k < N; k++) { const X = k % w, Y = (k / w) | 0; if (X && Y && X < w - 1 && Y < h - 1) continue; const i = k * 4; bv += Math.hypot(p[i] - br, p[i + 1] - bg, p[i + 2] - bb); }
+          if (bv / bn < 6) for (let k = 0; k < N; k++) { const i = k * 4; if (Math.hypot(p[i] - br, p[i + 1] - bg, p[i + 2] - bb) < 14) gone[k] = 1; }
+          for (let k = 0; k < N; k++) if (gone[k]) p[k * 4 + 3] = 0;
         }
+        // On enlève les petites taches isolées (étoiles, poussières) : on garde les morceaux assez gros.
+        const lab = new Int32Array(N), sizes = [0]; const st = new Int32Array(N);
+        for (let k = 0; k < N; k++) {
+          if (lab[k] || p[k * 4 + 3] < 25) continue;
+          const id = sizes.length; let n = 0, sp = 0; st[sp++] = k; lab[k] = id;
+          while (sp) { const u = st[--sp]; n++; const X = u % w;
+            const nb = [X > 0 ? u - 1 : -1, X < w - 1 ? u + 1 : -1, u >= w ? u - w : -1, u < N - w ? u + w : -1];
+            for (const j of nb) if (j >= 0 && !lab[j] && p[j * 4 + 3] >= 25) { lab[j] = id; st[sp++] = j; } }
+          sizes.push(n);
+        }
+        const big = Math.max(0, ...sizes);
+        for (let k = 0; k < N; k++) if (lab[k] && sizes[lab[k]] < big * 0.02) p[k * 4 + 3] = 0;
+        // Contour : si le logo était entouré d'un trait foncé (souvent le cas), on remet ce trait autour des lettres.
+        { const R = Math.max(2, Math.round(Math.max(w, h) * 0.009)), dd = new Int16Array(N).fill(-1), qq = new Int32Array(N); let qh = 0, qt = 0, lum = 0, nl = 0;
+          for (let k = 0; k < N; k++) if (p[k * 4 + 3] >= 25) { dd[k] = 0; qq[qt++] = k; }
+          while (qh < qt) { const k = qq[qh++], X = k % w; if (dd[k] >= R) continue;
+            const nb = [X > 0 ? k - 1 : -1, X < w - 1 ? k + 1 : -1, k >= w ? k - w : -1, k < N - w ? k + w : -1];
+            for (const j of nb) if (j >= 0 && dd[j] < 0) { dd[j] = dd[k] + 1; qq[qt++] = j; const i = j * 4; lum += p[i] * .3 + p[i + 1] * .59 + p[i + 2] * .11; nl++; } }
+          if (nl && lum / nl < 70) for (let k = 0; k < N; k++) if (dd[k] > 0) p[k * 4 + 3] = dd[k] === R ? 140 : 255; }
+        // Bords adoucis : un pixel gardé qui touche le fond devient semi-transparent.
+        const a2 = new Uint8ClampedArray(N);
+        for (let k = 0; k < N; k++) { a2[k] = p[k * 4 + 3]; }
+        for (let k = 0; k < N; k++) { if (!a2[k]) continue; const X = k % w;
+          let z = 0; if (X > 0 && !a2[k - 1]) z++; if (X < w - 1 && !a2[k + 1]) z++; if (k >= w && !a2[k - w]) z++; if (k < N - w && !a2[k + w]) z++;
+          if (z >= 2) p[k * 4 + 3] = a2[k] >> 1; }
+        x.putImageData(d, 0, 0);
         let x0 = w, y0 = h, x1 = -1, y1 = -1;
-        for (let Y = 0; Y < h; Y++) for (let X = 0; X < w; X++) if (p[(Y * w + X) * 4 + 3] > 24) { if (X < x0) x0 = X; if (X > x1) x1 = X; if (Y < y0) y0 = Y; if (Y > y1) y1 = Y; }
+        for (let k = 0; k < N; k++) if (p[k * 4 + 3] > 24) { const X = k % w, Y = (k / w) | 0; if (X < x0) x0 = X; if (X > x1) x1 = X; if (Y < y0) y0 = Y; if (Y > y1) y1 = Y; }
         if (x1 < 0) { ko(new Error('vide')); return; }
         const cw = x1 - x0 + 1, ch = y1 - y0 + 1;
         const o = document.createElement('canvas'); o.width = cw; o.height = ch;
         const ox = o.getContext('2d'); ox.drawImage(c, x0, y0, cw, ch, 0, 0, cw, ch);
-        const od = ox.getImageData(0, 0, cw, ch).data; let cnt = 0, sat = 0;
-        for (let i = 0; i < od.length; i += 4) { if (od[i + 3] < 128) continue; cnt++; sat += Math.max(od[i], od[i + 1], od[i + 2]) - Math.min(od[i], od[i + 1], od[i + 2]); }
+        // Recolorer seulement un logo d'une seule teinte (ex. texte noir) ; un logo avec du détail garde ses couleurs.
+        const od = ox.getImageData(0, 0, cw, ch).data; let cnt = 0, sat = 0, ls = 0, ls2 = 0;
+        for (let i = 0; i < od.length; i += 4) { if (od[i + 3] < 200) continue; cnt++; sat += Math.max(od[i], od[i + 1], od[i + 2]) - Math.min(od[i], od[i + 1], od[i + 2]);
+          const L = od[i] * .3 + od[i + 1] * .59 + od[i + 2] * .11; ls += L; ls2 += L * L; }
+        const sd = cnt ? Math.sqrt(Math.max(0, ls2 / cnt - (ls / cnt) ** 2)) : 0;
         const cache = {};
-        ok({ url: o.toDataURL('image/png'), mono: cnt > 0 && sat / cnt < 40, tint(col) {
+        ok({ url: o.toDataURL('image/png'), mono: cnt > 0 && sat / cnt < 40 && sd < 45, tint(col) {
           if (cache[col]) return cache[col];
           const t = document.createElement('canvas'); t.width = cw; t.height = ch;
           const tx = t.getContext('2d'); tx.drawImage(o, 0, 0); tx.globalCompositeOperation = 'source-in'; tx.fillStyle = col; tx.fillRect(0, 0, cw, ch);
